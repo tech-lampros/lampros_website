@@ -6,7 +6,7 @@ import img10 from '../../assets/img10.png'; // Replace with the actual path
 import img11 from '../../assets/img11.png'; // Replace with the actual path
 import img12 from '../../assets/img12.png'; // Replace with the actual path
 
-const ProHome = () => {
+const ProHome = ({ onGetStarted }) => {
   const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
 
   return (
@@ -22,17 +22,17 @@ const ProHome = () => {
         <Card>
           <img src={img10} alt="Professionals" />
           <CardTitle>Professionals</CardTitle>
-          <Button>Get started</Button>
+          <Button onClick={onGetStarted}>Get started</Button>
         </Card>
         <Card>
           <img src={img11} alt="Product Sellers" />
           <CardTitle>Product Sellers</CardTitle>
-          <Button>Get started</Button>
+          <Button onClick={onGetStarted}>Get started</Button>
         </Card>
         <Card>
           <img src={img12} alt="Realtor" />
           <CardTitle>Realtor</CardTitle>
-          <Button>Get started</Button>
+          <Button onClick={onGetStarted}>Get started</Button>
         </Card>
       </CardContainer>
     </Container>
