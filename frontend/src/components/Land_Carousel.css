@@ -1,0 +1,90 @@
+.carousel-slide {
+  display: flex;
+  align-items: center;
+  background-color: #F5F7FA;
+  padding: 20px;
+  height: 100%;
+  flex-direction: column; /* Change to column for smaller screens */
+}
+
+.carousel-content {
+  flex: 1;
+  padding: 0 20px;
+  max-width: 100%;
+  text-align: center; /* Center-align text on smaller screens */
+}
+
+.carousel-content h2 {
+  color: #263238;
+  font-size: 32px; /* Adjust font size for better responsiveness */
+  margin-bottom: 10px;
+}
+
+.carousel-content .highlighted-text {
+  color: #FF7800;
+  margin-top: 0;
+  font-size: 32px; /* Adjust font size for better responsiveness */
+}
+
+.carousel-content p {
+  color: #263238;
+  font-size: 18px; /* Adjust font size for better responsiveness */
+}
+
+.carousel-image {
+  flex: 1;
+  max-width: 100%;
+  margin-top: 20px; /* Add margin to separate text and image */
+}
+
+.carousel-image img {
+  width: 100%;
+  height: auto;
+  margin: 0;
+  padding: 0;
+}
+
+.carousel .control-dots .dot {
+  background-color: #ffa500; /* Orange color for inactive dots */
+}
+
+.carousel .control-dots .dot.selected, 
+.carousel .control-dots .dot:hover {
+  background-color: #ff8c00; /* Darker orange color for active/hovered dots */
+}
+
+/* Ensure the dot is visible on various backgrounds */
+.carousel .control-dots {
+  bottom: 15px; /* Adjust position if needed */
+}
+
+/* Responsive adjustments */
+@media (min-width: 768px) {
+  .carousel-slide {
+    flex-direction: row; /* Row direction for larger screens */
+  }
+
+  .carousel-content {
+    padding-right: 100px;
+    padding-left: 100px;
+    max-width: 50%;
+    text-align: start; /* Left-align text on larger screens */
+  }
+
+  .carousel-content h2 {
+    font-size: 48px; /* Larger font size for larger screens */
+  }
+
+  .carousel-content .highlighted-text {
+    font-size: 48px; /* Larger font size for larger screens */
+  }
+
+  .carousel-content p {
+    font-size: 20px; /* Larger font size for larger screens */
+  }
+
+  .carousel-image {
+    max-width: 50%;
+    margin-top: 0; /* Remove margin for larger screens */
+  }
+}

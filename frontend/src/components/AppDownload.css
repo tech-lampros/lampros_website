@@ -1,0 +1,62 @@
+.app-download-container {
+  display: flex;
+  flex-direction: column; /* Stack items vertically on smaller screens */
+  align-items: center;
+  justify-content: center;
+  background-color: #FFFBFB;
+  padding: 20px; /* Adjust padding for smaller screens */
+  text-align: center; /* Center text on smaller screens */
+}
+
+.app-image img {
+  max-width: 100%; /* Ensure image scales down on smaller screens */
+  border-radius: 20px;
+}
+
+.app-info {
+  margin-top: 20px; /* Add space between image and text on smaller screens */
+}
+
+.highlight {
+  color: #FF6D00;
+}
+
+h2 {
+  font-size: 1.5rem; /* Adjust font size for smaller screens */
+  margin-bottom: 10px;
+}
+
+p {
+  font-size: 0.9rem; /* Adjust font size for smaller screens */
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.download-buttons img {
+  max-width: 120px; /* Adjust size of buttons for smaller screens */
+  margin: 5px; /* Reduce margin for smaller screens */
+}
+
+/* Responsive Styles */
+@media (min-width: 768px) {
+  .app-download-container {
+    flex-direction: row; /* Align items horizontally on larger screens */
+    text-align: left;
+  }
+
+  .app-info {
+    margin-left: 40px;
+  }
+
+  h2 {
+    font-size: 2rem;
+  }
+
+  p {
+    font-size: 1rem;
+  }
+
+  .download-buttons img {
+    max-width: 150px;
+  }
+}

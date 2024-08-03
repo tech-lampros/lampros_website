@@ -1,0 +1,94 @@
+.explore-container {
+  background-color: #FFFBFB;
+  padding: 20px;
+}
+
+.explore-title {
+  text-align: center;
+  font-size: 24px;
+  margin: 50px 0;
+}
+
+.explore-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 2 columns */
+  gap: 40px; /* Space between items */
+  justify-content: center;
+}
+
+.explore-item {
+  display: flex;
+  align-items: flex-start;
+  margin: 0px 100px  0px 100px; /* Margin between rows */
+}
+
+.explore-image {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 20px;
+}
+
+.explore-text-container {
+  flex: 1;
+  text-align: start;
+}
+
+.explore-subtitle {
+  font-size: 18px;
+  margin: 0 0 10px 0;
+}
+
+.explore-text {
+  font-size: 14px;
+  color: #555;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .explore-grid {
+    grid-template-columns: 1fr; /* Single column for smaller screens */
+  }
+
+  .explore-item {
+    margin: 0px auto; /* Center items */
+    flex-direction: column; /* Stack image and text vertically */
+    align-items: center; /* Center-align content */
+    width: 80%;
+  }
+
+  .explore-image {
+    margin: 0 0 10px 0; /* Add margin below the image */
+  }
+
+  .explore-text-container {
+    text-align: center; /* Center-align text on smaller screens */
+  }
+
+  .explore-title {
+    font-size: 20px; /* Adjust font size for smaller screens */
+  }
+
+  .explore-subtitle {
+    font-size: 16px; /* Adjust font size for smaller screens */
+  }
+
+  .explore-text {
+    font-size: 14px; /* Adjust font size for smaller screens */
+  }
+}
+
+@media (max-width: 480px) {
+  .explore-title {
+    font-size: 18px; /* Further adjust font size for very small screens */
+  }
+
+  .explore-subtitle {
+    font-size: 14px; /* Further adjust font size for very small screens */
+  }
+
+  .explore-text {
+    font-size: 11px; /* Further adjust font size for very small screens */
+  }
+}
