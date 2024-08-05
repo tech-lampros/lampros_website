@@ -17,13 +17,18 @@ const NavigationBar = ({ onHomeClick, onJoinAsProClick }) => {
       <Navbar.Brand href="#home" className="custom-brand" onClick={onHomeClick}>
         <img
           src={logo}
-          width="100%"
-          height="40"
+          width="90%"
+          height="30"
           className="d-inline-block align-top"
           alt="Logo"
         />
       </Navbar.Brand>
-
+      <Form inline className="join-pro-form">
+        <Button className="join-pro-btn" onClick={onJoinAsProClick}>
+          JOIN AS PRO <FaUserPlus className="join-pro-icon" />
+        </Button>
+      </Form>
+      
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="mx-auto">
@@ -47,11 +52,6 @@ const NavigationBar = ({ onHomeClick, onJoinAsProClick }) => {
             <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
             <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
           </NavDropdown>
-          <Form inline className="join-pro-form">
-            <Button className="join-pro-btn" onClick={onJoinAsProClick}>
-              JOIN AS PRO <FaUserPlus className="join-pro-icon" />
-            </Button>
-          </Form>
         </Nav>
         <Form inline className={`search-form ml-auto ${searchVisible ? 'show' : 'hide'}`}>
           <FormControl type="text" placeholder="Search" className="search-input" />

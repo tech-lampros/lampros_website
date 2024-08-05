@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import './App.css';
 import Nav from './components/Nav';
+import Mobnav from './components/Mobnav';
 import LandCarousel from './components/LandCarousel';
 import Explore from './components/Explore';
 import Benefits from './components/Benefits';
@@ -27,7 +28,14 @@ function App() {
 
   return (
     <div className="App">
-      <Nav onHomeClick={handleHomeClick} onJoinAsProClick={handleJoinAsPro} />
+       <div>
+      <div className="desktop-view">
+        <Nav onHomeClick={handleHomeClick} onJoinAsProClick={handleJoinAsPro} />
+      </div>
+      <div className="mobile-view">
+        <Mobnav onHomeClick={handleHomeClick} onJoinAsProClick={handleJoinAsPro} />
+      </div>
+    </div>
       {view === 'home' && (
         <>
           <LandCarousel />

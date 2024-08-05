@@ -120,3 +120,19 @@
     width: 80px;
   }
 }
+
+.search-form {
+  display: flex;
+  align-items: center;
+}
+
+.search-input {
+  width: 0;
+  opacity: 0;
+  transition: width 0.5s, opacity 0.5s;
+}
+
+.search-form.show .search-input {
+  width: 200px;
+  opacity: 1;
+}

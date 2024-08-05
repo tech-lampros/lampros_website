@@ -36,3 +36,28 @@
     transform: rotate(360deg);
   }
 }
+
+/* Hide mobile view by default */
+.mobile-view {
+  display: none;
+}
+
+/* Show mobile view on smaller screens */
+@media (max-width: 768px) {
+  .mobile-view {
+    display: block;
+  }
+  .desktop-view {
+    display: none;
+  }
+}
+
+/* Show desktop view on larger screens */
+@media (min-width: 769px) {
+  .desktop-view {
+    display: block;
+  }
+  .mobile-view {
+    display: none;
+  }
+}
