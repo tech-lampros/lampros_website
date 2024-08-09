@@ -16,7 +16,11 @@
 .app-info {
   margin-top: 20px; /* Add space between image and text on smaller screens */
 }
-
+.small-logoo {
+  width: 100px !important; /* Adjust the size as needed */
+  height: auto; /* Maintain aspect ratio */
+  margin-left: 5px; /* Optional: Adjust spacing */
+}
 .highlight {
   color: #FF6D00;
 }
@@ -42,6 +46,11 @@ p {
   .app-download-container {
     flex-direction: row; /* Align items horizontally on larger screens */
     text-align: left;
+  }
+  .small-logo {
+    width: 250px; /* Adjust the size as needed */
+    height: auto; /* Maintain aspect ratio */
+    margin-left: 5px; /* Optional: Adjust spacing */
   }
 
   .app-info {

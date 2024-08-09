@@ -1,0 +1,109 @@
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .footer-container {
+      padding: 30px 10px;
+      text-align: center; /* Center-align text and inline elements */
+    }
+  
+    .footer-content {
+      flex-direction: column;
+      align-items: center; /* Center-align items vertically */
+      justify-content: center; /* Center-align items horizontally */
+      gap: 0;
+    }
+  
+    .footer-section {
+      margin-bottom: 20px;
+      width: 100%;
+      padding: 10px 0;
+      border-bottom: 1px solid #444;
+      text-align: center; /* Center-align text */
+    }
+    .small-logo {
+        width: 250px; /* Adjust the size as needed */
+        height: auto; /* Maintain aspect ratio */
+        margin-left: 5px; /* Optional: Adjust spacing */
+      }
+    .footer-section h2 {
+      font-size: 1.25rem;
+      display: flex;
+      justify-content: center; /* Center-align header text */
+      align-items: center;
+      cursor: pointer;
+      padding: 0;
+    }
+  
+    .footer-section h2::after {
+      content: ''; /* Remove any existing icon */
+      display: none; /* Ensure dropdown icon is hidden */
+    }
+  
+    .footer-section ul {
+      display: none;
+      padding: 0; /* Adjust padding */
+      margin: 0; /* Remove default margin */
+      list-style: none; /* Remove list dots */
+      text-align: center; /* Center-align list items */
+    }
+  
+    .footer-section.active ul {
+      display: block;
+    }
+  
+    .footer-section p {
+      font-size: 0.8rem;
+    }
+  
+    .social-icons {
+      display: flex;
+      justify-content: center; /* Center-align icons horizontally */
+      gap: 10px;
+      margin-top: 15px;
+    }
+  
+    .social-icons .icon-button {
+      font-size: 1.25rem;
+      margin-left: 10px; /* Add margin-left for spacing */
+      align-items: center;
+      display: flex;
+      text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .footer-container {
+      padding: 20px 5px;
+    }
+  
+    .footer-section h2 {
+      font-size: 1rem;
+    }
+  
+    .footer-section p {
+      font-size: 0.75rem;
+    }
+  
+    .social-icons .icon-button {
+      font-size: 1rem;
+    }
+}
+
+.icon-button {
+    background: none;
+    border: none;
+    color: inherit;
+    cursor: pointer;
+    padding: 0;
+    font: inherit;
+    text-align: center;
+}
+
+.link-button {
+    background: none;
+    border: none;
+    color: inherit;
+    cursor: pointer;
+    padding: 0;
+    font: inherit;
+    text-align: center;
+}

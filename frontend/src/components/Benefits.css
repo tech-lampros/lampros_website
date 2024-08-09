@@ -34,10 +34,7 @@
   animation: fadeInUp 1s ease-out forwards;
 }
 
-.benefit-item:hover {
-  transform: scale(1.05); /* Slight zoom effect on hover */
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3); /* Shadow effect without changing color */
-}
+
 
 .benefit-icon {
   font-size: 2rem;
@@ -46,10 +43,7 @@
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.benefit-item:hover .benefit-icon {
-  transform: scale(1.1); /* Slight zoom effect on hover */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Shadow effect without changing color */
-}
+
 
 h3 {
   font-size: 1.3rem;
@@ -57,9 +51,6 @@ h3 {
   transition: transform 0.3s ease;
 }
 
-.benefit-item:hover h3 {
-  transform: translateY(-5px); /* Lift title on hover */
-}
 
 p {
   font-size: 1rem;
@@ -67,9 +58,7 @@ p {
   transition: box-shadow 0.3s ease;
 }
 
-.benefit-item:hover p {
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Shadow effect without changing color */
-}
+
 
 /* Keyframes for animations */
 @keyframes fadeIn {

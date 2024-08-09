@@ -61,3 +61,10 @@
     display: none;
   }
 }
+
+/* In your main CSS file (e.g., App.css) */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&display=swap');
+/* In your main CSS file (e.g., App.css) */
+body {
+  font-family: 'Outfit', sans-serif;
+}

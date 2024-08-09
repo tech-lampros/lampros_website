@@ -7,6 +7,7 @@ import Explore from './components/Explore';
 import Benefits from './components/Benefits';
 import AppDownload from './components/AppDownload';
 import Footer from './components/Footer';
+import FooterMob from './components/FooterMob';
 import ProHome from './components/pro/ProHome';
 import AccountCreation from './components/pro/AccountCreation';
 import DesignsPage from './components/DesignPage';
@@ -46,7 +47,7 @@ function App() {
           <Nav onHomeClick={handleHomeClick} onJoinAsProClick={handleJoinAsPro} onDesignsClick={handleDesignsClick} onProductsClick={handleProductsClick} onProfessionalsClick={handleProfessionalsClick} />
         </div>
         <div className="mobile-view">
-          <Mobnav onHomeClick={handleHomeClick} onJoinAsProClick={handleJoinAsPro} />
+          <Mobnav onHomeClick={handleHomeClick} onJoinAsProClick={handleJoinAsPro} onDesignsClick={handleDesignsClick} onProductsClick={handleProductsClick} onProfessionalsClick={handleProfessionalsClick} />
         </div>
       </div>
       {view === 'home' && (
@@ -62,7 +63,13 @@ function App() {
       {view === 'designs' && <DesignsPage />}
       {view === 'products' && <ProductsPage />}
       {view === 'professionals' && <Professionals />}
+      <div className="desktop-view">
       <Footer />
+         </div>
+        <div className="mobile-view">
+        <FooterMob />
+        </div>
+      
     </div>
   );
 }
