@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
-import { Navbar, Nav, NavDropdown, Form, FormControl, Button } from 'react-bootstrap';
+import React,{useState} from 'react';
+import { Navbar, Nav, Form, FormControl, Button } from 'react-bootstrap';
 import { FaSearch, FaUserPlus } from 'react-icons/fa';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './Nav.css'; // Import custom CSS
 import logo from '../assets/logo.png';
 
-const NavigationBar = ({ onHomeClick, onJoinAsProClick }) => {
+const NavigationBar = ({ onHomeClick, onJoinAsProClick, onDesignsClick, onProductsClick, onProfessionalsClick }) => {
   const [searchVisible, setSearchVisible] = useState(false);
 
   const toggleSearch = () => {
@@ -27,26 +27,16 @@ const NavigationBar = ({ onHomeClick, onJoinAsProClick }) => {
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="mx-auto">
-          <NavDropdown title="Designs" id="designs-nav-dropdown">
-            <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-            <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
-            <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-          </NavDropdown>
-          <NavDropdown title="Professionals" id="professionals-nav-dropdown">
-            <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-            <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
-            <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-          </NavDropdown>
-          <NavDropdown title="Products" id="products-nav-dropdown">
-            <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-            <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
-            <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-          </NavDropdown>
-          <NavDropdown title="Land & Properties" id="land-nav-dropdown">
-            <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-            <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
-            <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-          </NavDropdown>
+          <Nav.Link onClick={onDesignsClick}>
+            Designs
+          </Nav.Link>
+          <Nav.Link onClick={onProfessionalsClick}>
+            Professionals
+          </Nav.Link>
+          <Nav.Link onClick={onProductsClick}>
+            Products
+          </Nav.Link>
+         
           <Form inline className="join-pro-form">
             <Button className="join-pro-btn" onClick={onJoinAsProClick}>
               JOIN AS PRO <FaUserPlus className="join-pro-icon" />

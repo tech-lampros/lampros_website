@@ -1,12 +1,16 @@
+/* Base styles */
 .explore-container {
   background-color: #FFFBFB;
   padding: 20px;
+  opacity: 0;
+  animation: fadeIn 1s forwards;
 }
 
 .explore-title {
   text-align: center;
   font-size: 24px;
   margin: 50px 0;
+  transition: font-size 0.3s ease;
 }
 
 .explore-grid {
@@ -19,7 +23,10 @@
 .explore-item {
   display: flex;
   align-items: flex-start;
-  margin: 0px 100px  0px 100px; /* Margin between rows */
+  margin: 0px 100px; /* Margin between rows */
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.5s forwards;
 }
 
 .explore-image {
@@ -28,6 +35,7 @@
   border-radius: 50%;
   object-fit: cover;
   margin-right: 20px;
+  transition: transform 0.3s ease;
 }
 
 .explore-text-container {
@@ -38,11 +46,13 @@
 .explore-subtitle {
   font-size: 18px;
   margin: 0 0 10px 0;
+  transition: font-size 0.3s ease;
 }
 
 .explore-text {
   font-size: 14px;
   color: #555;
+  transition: font-size 0.3s ease;
 }
 
 /* Responsive adjustments */
@@ -90,5 +100,19 @@
 
   .explore-text {
     font-size: 11px; /* Further adjust font size for very small screens */
+  }
+}
+
+/* Keyframes for animations */
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

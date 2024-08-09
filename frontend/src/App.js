@@ -1,4 +1,3 @@
-// src/App.js
 import React, { useState } from 'react';
 import './App.css';
 import Nav from './components/Nav';
@@ -10,9 +9,12 @@ import AppDownload from './components/AppDownload';
 import Footer from './components/Footer';
 import ProHome from './components/pro/ProHome';
 import AccountCreation from './components/pro/AccountCreation';
+import DesignsPage from './components/DesignPage';
+import ProductsPage from './components/ProductPage';
+import Professionals from './components/Professionals';
 
 function App() {
-  const [view, setView] = useState('home'); // 'home' | 'pro' | 'accountCreation'
+  const [view, setView] = useState('home'); // 'home' | 'pro' | 'accountCreation' | 'designs'
 
   const handleJoinAsPro = () => {
     setView('pro');
@@ -26,16 +28,27 @@ function App() {
     setView('home');
   };
 
+  const handleDesignsClick = () => {
+    setView('designs');
+  };
+
+  const handleProductsClick = () => {
+    setView('products');
+  };
+  const handleProfessionalsClick = () => {
+    setView('professionals');
+  };
+
   return (
     <div className="App">
-       <div>
-      <div className="desktop-view">
-        <Nav onHomeClick={handleHomeClick} onJoinAsProClick={handleJoinAsPro} />
+      <div>
+        <div className="desktop-view">
+          <Nav onHomeClick={handleHomeClick} onJoinAsProClick={handleJoinAsPro} onDesignsClick={handleDesignsClick} onProductsClick={handleProductsClick} onProfessionalsClick={handleProfessionalsClick} />
+        </div>
+        <div className="mobile-view">
+          <Mobnav onHomeClick={handleHomeClick} onJoinAsProClick={handleJoinAsPro} />
+        </div>
       </div>
-      <div className="mobile-view">
-        <Mobnav onHomeClick={handleHomeClick} onJoinAsProClick={handleJoinAsPro} />
-      </div>
-    </div>
       {view === 'home' && (
         <>
           <LandCarousel />
@@ -46,6 +59,9 @@ function App() {
       )}
       {view === 'pro' && <ProHome onGetStarted={handleGetStarted} />}
       {view === 'accountCreation' && <AccountCreation />}
+      {view === 'designs' && <DesignsPage />}
+      {view === 'products' && <ProductsPage />}
+      {view === 'professionals' && <Professionals />}
       <Footer />
     </div>
   );

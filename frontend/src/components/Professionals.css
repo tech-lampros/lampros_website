@@ -1,0 +1,185 @@
+/* Professionals Section */
+.professionals-container {
+    text-align: center;
+    margin: 20px;
+}
+
+.professionals-container h2 {
+    font-size: 23px;
+    color: #333;
+    text-transform: uppercase;
+    margin: 20px 0;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif, sans-serif;
+    font-weight: bold;
+}
+
+.professionals-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 columns grid */
+    gap: 20px; /* Maintain the same gap */
+    margin-left: 10%; /* 10% margin on the left */
+    margin-right: 10%; /* 10% margin on the right */
+}
+
+.professional-card {
+    position: relative;
+    cursor: pointer;
+    overflow: hidden; /* Ensure inner shadow stays within the image boundaries */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: transparent; /* No background box */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+    border-radius: 8px;
+    padding: 0; /* Remove padding */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for transform and shadow */
+}
+
+.professional-card:hover {
+    transform: scale(1.05); /* Zoom effect on hover */
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3); /* Enhanced shadow on hover */
+}
+
+.professional-card img {
+    width: 100%;  /* Full width */
+    height: 200px; /* Set a fixed height */
+    object-fit: cover;
+    border-radius: 8px; /* Slightly rounded corners */
+    box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle inner shadow */
+    transition: box-shadow 0.3s ease; /* Smooth shadow transition */
+}
+
+.professional-card:hover img {
+    box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.3), 0 4px 12px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
+}
+
+.professional-card h2 {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    color: white;
+    padding: 5px 10px; /* Padding to fit text and create space */
+    font-size: 16px; /* Slightly larger text size */
+    margin: 0; /* Remove margin */
+    text-align: center; /* Center-align text */
+    background: rgba(0, 0, 0, 0.4); /* Semi-transparent background to enhance text readability */
+    border-radius: 0 0 8px 8px; /* Rounded corners at the bottom */
+    box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.3); /* Slight shadow at the top to blend with the image */
+    transition: opacity 0.3s ease; /* Smooth transition for opacity */
+}
+
+.professional-card:hover h2 {
+    opacity: 1; /* Ensure text is visible on hover */
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .professionals-grid {
+        grid-template-columns: repeat(2, 1fr); /* 2 columns grid on mobile */
+        gap: 15px; /* Adjust gap for mobile */
+        margin-left: 5%; /* Reduce margin on mobile */
+        margin-right: 5%;
+    }
+
+    .professional-card img {
+        width: 100%; /* Width for mobile */
+        height: auto;  /* Maintain aspect ratio */
+    }
+
+    .professional-card h2 {
+        font-size: 14px; /* Smaller text size for mobile */
+        padding: 5px; /* Adjust padding for mobile */
+    }
+}
+
+/* Products Section */
+.products-container {
+    text-align: center;
+    margin: 20px;
+}
+
+.products-container h2 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 columns grid */
+    gap: 20px; /* Maintain the same gap */
+    margin-left: 10%; /* 10% margin on the left */
+    margin-right: 10%; /* 10% margin on the right */
+}
+
+.product-item {
+    position: relative;
+    cursor: pointer;
+    overflow: hidden; /* Ensure inner shadow stays within the image boundaries */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: transparent; /* No background box */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+    border-radius: 8px;
+    padding: 0; /* Remove padding */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for transform and shadow */
+}
+
+.product-item:hover {
+    transform: scale(1.05); /* Zoom effect on hover */
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3); /* Enhanced shadow on hover */
+}
+
+.product-image {
+    width: 100%;  /* Width */
+    height: 200px; /* Height */
+    border-radius: 8px;
+    box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle inner shadow */
+    transition: box-shadow 0.3s ease; /* Smooth shadow transition */
+}
+
+.product-item:hover .product-image {
+    box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.3), 0 4px 12px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
+}
+
+.product-item h3 {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    color: white;
+    padding: 5px 10px; /* Padding to fit text and create space */
+    font-size: 16px; /* Slightly larger text size */
+    margin: 0; /* Remove margin */
+    text-align: center; /* Center-align text */
+    background: rgba(0, 0, 0, 0.4); /* Semi-transparent background to enhance text readability */
+    border-radius: 0 0 8px 8px; /* Rounded corners at the bottom */
+    box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.3); /* Slight shadow at the top to blend with the image */
+    transition: opacity 0.3s ease; /* Smooth transition for opacity */
+}
+
+.product-item:hover h3 {
+    opacity: 1; /* Ensure text is visible on hover */
+}
+
+/* Responsive design for products */
+@media (max-width: 768px) {
+    .products-grid {
+        grid-template-columns: repeat(2, 1fr); /* 2 columns grid on mobile */
+        gap: 15px; /* Adjust gap for mobile */
+        margin-left: 5%; /* Reduce margin on mobile */
+        margin-right: 5%;
+    }
+
+    .product-image {
+        width: 100%; /* Width for mobile */
+        height: auto;  /* Maintain aspect ratio */
+    }
+
+    .product-item h3 {
+        font-size: 14px; /* Smaller text size for mobile */
+        padding: 5px; /* Adjust padding for mobile */
+    }
+}
