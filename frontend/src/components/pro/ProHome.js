@@ -2,9 +2,9 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useMediaQuery } from 'react-responsive';
-import img10 from '../../assets/img10.png'; // Replace with the actual path
-import img11 from '../../assets/img11.png'; // Replace with the actual path
-import img12 from '../../assets/img12.png'; // Replace with the actual path
+import img10 from '../../assets/img10.jpg'; // Replace with the actual path
+import img11 from '../../assets/img11.jpg'; // Replace with the actual path
+import img12 from '../../assets/img12.jpg'; // Replace with the actual path
 
 const ProHome = ({ onGetStarted }) => {
   const isMobile = useMediaQuery({ query: '(max-width: 768px)' });

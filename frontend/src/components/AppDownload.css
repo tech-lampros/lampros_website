@@ -8,16 +8,40 @@
   text-align: center; /* Center text on smaller screens */
 }
 
-.app-image img {
-  max-width: 100%; /* Ensure image scales down on smaller screens */
-  border-radius: 20px;
+.app-image {
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* C /* Optional: adjust to your preferred height */
 }
+
+.app-image img {
+  border-radius: 20px;
+  width: auto;
+  height: auto;
+}
+
+/* Styles for laptops and larger screens */
+@media (min-width: 1024px) {
+  .app-image img {
+    max-width: 400px; /* Larger width for laptops */
+    max-height: 400px; /* Larger height for laptops */
+  }
+}
+
+/* Styles for mobile devices */
+@media (max-width: 767px) {
+  .app-image img {
+    max-width: 150px; /* Slightly larger width for mobile */
+    max-height: 150px; /* Slightly larger height for mobile */
+  }
+}
+
 
 .app-info {
   margin-top: 20px; /* Add space between image and text on smaller screens */
 }
 .small-logoo {
-  width: 100px !important; /* Adjust the size as needed */
+  width: 160px !important; /* Adjust the size as needed */
   height: auto; /* Maintain aspect ratio */
   margin-left: 5px; /* Optional: Adjust spacing */
 }

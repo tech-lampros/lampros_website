@@ -32,6 +32,13 @@
   margin-bottom: 10px;
 }
 
+.footer-mobile-section ul li button{
+  background-color: transparent;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+}
+
 .footer-mobile-section .link-button {
   background: none; /* Remove background */
   border: none; /* Remove border */

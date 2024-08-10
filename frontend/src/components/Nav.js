@@ -39,7 +39,7 @@ const NavigationBar = ({ onHomeClick, onJoinAsProClick, onDesignsClick, onProduc
          
           <Form inline className="join-pro-form">
             <Button className="join-pro-btn" onClick={onJoinAsProClick}>
-              JOIN AS PRO <FaUserPlus className="join-pro-icon" />
+            Become a partner <FaUserPlus className="join-pro-icon" />
             </Button>
           </Form>
         </Nav>
