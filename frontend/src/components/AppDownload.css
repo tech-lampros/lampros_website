@@ -37,7 +37,7 @@ p {
 }
 
 .download-buttons img {
-  max-width: 120px; /* Adjust size of buttons for smaller screens */
+  max-width: 150px; /* Adjust size of buttons for smaller screens */
   margin: 5px; /* Reduce margin for smaller screens */
 }
 
@@ -48,9 +48,10 @@ p {
     text-align: left;
   }
   .small-logo {
-    width: 250px; /* Adjust the size as needed */
+    width: 500px; /* Adjust the size as needed */
     height: auto; /* Maintain aspect ratio */
-    margin-left: 5px; /* Optional: Adjust spacing */
+    margin-left: 5px;
+    margin-bottom: 10px; /* Optional: Adjust spacing */
   }
 
   .app-info {
@@ -66,6 +67,6 @@ p {
   }
 
   .download-buttons img {
-    max-width: 150px;
+    max-width: 250px;
   }
 }

@@ -15,61 +15,57 @@ import ProductsPage from './components/ProductPage';
 import Professionals from './components/Professionals';
 
 function App() {
-  const [view, setView] = useState('home'); // 'home' | 'pro' | 'accountCreation' | 'designs'
+  const [view, setView] = useState('home');
 
-  const handleJoinAsPro = () => {
-    setView('pro');
-  };
-
-  const handleGetStarted = () => {
-    setView('accountCreation');
-  };
-
-  const handleHomeClick = () => {
-    setView('home');
-  };
-
-  const handleDesignsClick = () => {
-    setView('designs');
-  };
-
-  const handleProductsClick = () => {
-    setView('products');
-  };
-  const handleProfessionalsClick = () => {
-    setView('professionals');
+  const handleViewChange = (newView) => {
+    setView(newView);
   };
 
   return (
     <div className="App">
-      <div>
-        <div className="desktop-view">
-          <Nav onHomeClick={handleHomeClick} onJoinAsProClick={handleJoinAsPro} onDesignsClick={handleDesignsClick} onProductsClick={handleProductsClick} onProfessionalsClick={handleProfessionalsClick} />
-        </div>
-        <div className="mobile-view">
-          <Mobnav onHomeClick={handleHomeClick} onJoinAsProClick={handleJoinAsPro} onDesignsClick={handleDesignsClick} onProductsClick={handleProductsClick} onProfessionalsClick={handleProfessionalsClick} />
-        </div>
+      <div className="desktop-view">
+        <Nav
+          onHomeClick={() => handleViewChange('home')}
+          onJoinAsProClick={() => handleViewChange('pro')}
+          onDesignsClick={() => handleViewChange('designs')}
+          onProductsClick={() => handleViewChange('products')}
+          onProfessionalsClick={() => handleViewChange('professionals')}
+        />
       </div>
+      <div className="mobile-view">
+        <Mobnav
+          onHomeClick={() => handleViewChange('home')}
+          onJoinAsProClick={() => handleViewChange('pro')}
+          onDesignsClick={() => handleViewChange('designs')}
+          onProductsClick={() => handleViewChange('products')}
+          onProfessionalsClick={() => handleViewChange('professionals')}
+        />
+      </div>
+
       {view === 'home' && (
         <>
           <LandCarousel />
-          <Explore />
+          <Explore
+            onDesignsClick={() => handleViewChange('designs')}
+            onProductsClick={() => handleViewChange('products')}
+            onProfessionalsClick={() => handleViewChange('professionals')}
+          />
           <Benefits />
           <AppDownload />
         </>
       )}
-      {view === 'pro' && <ProHome onGetStarted={handleGetStarted} />}
+      {view === 'pro' && <ProHome onGetStarted={() => handleViewChange('accountCreation')} />}
       {view === 'accountCreation' && <AccountCreation />}
       {view === 'designs' && <DesignsPage />}
       {view === 'products' && <ProductsPage />}
       {view === 'professionals' && <Professionals />}
+
       <div className="desktop-view">
-      <Footer />
-         </div>
-        <div className="mobile-view">
+        <Footer />
+      </div>
+      <div className="mobile-view">
         <FooterMob />
-        </div>
-      
+      </div>
     </div>
   );
 }

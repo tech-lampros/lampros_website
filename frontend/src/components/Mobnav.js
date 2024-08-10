@@ -3,6 +3,7 @@ import { Navbar, Nav, Form, FormControl, Button, Offcanvas } from 'react-bootstr
 import { FaSearch, FaUserPlus } from 'react-icons/fa';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import logo from '../assets/logo.png';
+import './Mobnav.css'
 
 function OffcanvasExample({ onHomeClick, onJoinAsProClick, onDesignsClick, onProductsClick, onProfessionalsClick }) {
   const [searchVisible, setSearchVisible] = useState(false);
@@ -20,15 +21,26 @@ function OffcanvasExample({ onHomeClick, onJoinAsProClick, onDesignsClick, onPro
   return (
     <>
       <Navbar expand="lg" className="bg-body-tertiary mb-3 custom-navbar">
-        <Navbar.Brand href="#home" className="custom-brand" onClick={onHomeClick}>
-          <img
-            src={logo}
-            width="100"
-            height="auto"
-            className="d-inline-block align-top"
-            alt="Logo"
-          />
-        </Navbar.Brand>
+      <Navbar.Brand href="#home" className="custom-brand d-flex align-items-center">
+      <img
+        src={logo}
+        width="120"
+        height="auto"
+        className="d-inline-block align-top"
+        alt="Logo"
+        onClick={onHomeClick}
+      />
+      <span 
+        className="join-pro-btn ms-3 d-flex align-items-center" 
+        onClick={() => { 
+          onJoinAsProClick(); 
+          handleNavClick(); 
+        }}
+      >
+       Become a par..
+        <FaUserPlus className="join-pro-icon ms-2" />
+      </span>
+    </Navbar.Brand>
         <Navbar.Toggle aria-controls="offcanvasNavbar" onClick={() => setShowOffcanvas(true)} />
         <Navbar.Offcanvas
           id="offcanvasNavbar"
@@ -38,11 +50,18 @@ function OffcanvasExample({ onHomeClick, onJoinAsProClick, onDesignsClick, onPro
           onHide={() => setShowOffcanvas(false)} // Close on clicking outside
         >
           <Offcanvas.Header closeButton>
-            <Offcanvas.Title id="offcanvasNavbarLabel">
-              Lampros
+            <Offcanvas.Title id="offcanvasNavbarLabel" onClick={() => { onHomeClick(); handleNavClick(); }}>
+            <img
+        src={logo}
+        width="120"
+        height="auto"
+        className="d-inline-block align-top"
+        alt="Logo"
+        onClick={onHomeClick}
+      />
             </Offcanvas.Title>
             <Button className="join-pro-btn ms-3" onClick={() => { onJoinAsProClick(); handleNavClick(); }}>
-              JOIN AS PRO <FaUserPlus className="join-pro-icon" />
+              Become a partner <FaUserPlus className="join-pro-icon" />
             </Button>
           </Offcanvas.Header>
           <Offcanvas.Body>

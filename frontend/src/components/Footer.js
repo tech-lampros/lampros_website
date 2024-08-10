@@ -8,7 +8,7 @@ const Footer = () => {
     <footer className="footer-container">
       <div className="footer-content">
         <div className="footer-section about">
-          <img src={logo} width={150} height={42} alt="Get it on Google Play" />
+          <img src={logo} width={250}  alt="Get it on Google Play" />
           <p>A real tech company for complete home solutions under one roof.</p>
           <div className="contact-info">
             <p><FaEnvelope /> careers.lampros@gmail.com</p>

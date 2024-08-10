@@ -46,7 +46,7 @@ const Professionals = () => {
         {professionals.map((professional, index) => (
           <div key={index} className="professional-card">
             <LazyImage src={professional.image} alt={professional.alt} className="design-image" />
-            <h2>{professional.name}</h2>
+            <h3>{professional.name}</h3>
           </div>
         ))}
       </div>

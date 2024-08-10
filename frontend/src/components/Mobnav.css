@@ -1,0 +1,12 @@
+.custom-brand {
+    display: flex;
+    align-items: center; /* Align items vertically centered */
+  }
+  
+  .join-pro-btn {
+    display: flex;
+    align-items: center; /* Align icon and text vertically centered */
+  }
+  
+
+  

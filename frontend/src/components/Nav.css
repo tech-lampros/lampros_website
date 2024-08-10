@@ -17,8 +17,8 @@
   background-color: #ff8c00;
   color: #fff;
   border: none;
-  border-radius: 20px;
-  padding: 5px 15px;
+  border-radius: 5px;
+  padding: 10px 10px;
   display: flex;
   align-items: center;
 }

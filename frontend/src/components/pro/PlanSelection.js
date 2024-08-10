@@ -1,4 +1,3 @@
-// src/components/PlanSelection.js
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
@@ -20,9 +19,44 @@ const planPrices = {
   },
 };
 
-const PlanSelection = ({ setStep }) => {
+const PlanSelection = ({ setStep, formData, setFormData }) => {
   const [selectedDuration, setSelectedDuration] = useState('6 Months');
-  const [selectedPlan, setSelectedPlan] = useState('Elite');
+  const [selectedPlan, setSelectedPlan] = useState('Free');
+
+  const handleContinue = async () => {
+    const updatedFormData = {
+      ...formData,
+      plan: selectedPlan,
+      duration: selectedDuration,
+    };
+
+    setFormData(updatedFormData);
+
+    if (selectedPlan === 'Free') {
+      console.log(updatedFormData);
+      alert(`Plan: ${selectedPlan}, Duration: ${selectedDuration}`);
+    } else {
+      try {
+        const response = await fetch('https://your-api-endpoint.com/submit', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(updatedFormData),
+        });
+
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+
+        const result = await response.json();
+        console.log('Success:', result);
+        setStep(4); // Proceed to the next step if successful
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    }
+  };
 
   return (
     <Container>
@@ -65,6 +99,12 @@ const PlanSelection = ({ setStep }) => {
         ))}
       </PlanContainer>
       <PlanDetails>
+        <ContinueButton
+          onClick={handleContinue}
+          freePlan={selectedPlan === 'Free'}
+        >
+          {selectedPlan === 'Free' ? 'Activate Email' : 'Continue to Payment'}
+        </ContinueButton>
         <DetailsHeader>PLAN DETAILS</DetailsHeader>
         <DetailsTable>
           <TableRow>
@@ -88,7 +128,6 @@ const PlanSelection = ({ setStep }) => {
           {/* Continue for all features */}
         </DetailsTable>
       </PlanDetails>
-      <ContinueButton onClick={() => setStep(4)}>Continue to Payment</ContinueButton>
     </Container>
   );
 };
@@ -102,31 +141,36 @@ const Container = styled.div`
 const Title = styled.h1`
   text-align: center;
   margin-bottom: 20px;
+  font-size: 28px;
+  color: #333;
 `;
 
 const DurationTabs = styled.div`
   display: flex;
   justify-content: center;
   margin-bottom: 20px;
+  gap: 10px;
 `;
 
 const DurationTab = styled.div`
   padding: 10px 20px;
-  margin: 0 10px;
   cursor: pointer;
   background-color: ${({ active }) => (active ? '#007bff' : '#fff')};
   color: ${({ active }) => (active ? '#fff' : '#007bff')};
   border: 1px solid #007bff;
   border-radius: 5px;
+  transition: background-color 0.3s, color 0.3s;
   &:hover {
     background-color: ${({ active }) => (active ? '#0056b3' : '#e6f7ff')};
+    color: ${({ active }) => (active ? '#fff' : '#0056b3')};
   }
 `;
 
 const PlanContainer = styled.div`
   display: flex;
-  justify-content: space-between;
   flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
   margin-bottom: 20px;
 
   @media (max-width: 768px) {
@@ -136,17 +180,21 @@ const PlanContainer = styled.div`
 `;
 
 const PlanCard = styled.div`
-  width: 30%;
+  width: 280px;
   padding: 20px;
   background: ${({ selected }) => (selected ? '#e6f7ff' : '#fff')};
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
   cursor: pointer;
   position: relative;
+  transition: background 0.3s, box-shadow 0.3s;
+  &:hover {
+    background: #f0f8ff;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  }
 
   @media (max-width: 768px) {
-    width: 80%;
-    margin-bottom: 20px;
+    width: 90%;
   }
 `;
 
@@ -164,12 +212,15 @@ const RadioCircle = styled.div`
 const PlanHeader = styled.h2`
   text-align: center;
   margin-bottom: 10px;
+  font-size: 20px;
+  color: #333;
 `;
 
 const PlanPrice = styled.p`
   text-align: center;
   font-size: 24px;
   margin-bottom: 20px;
+  color: #007bff;
 `;
 
 const OldPrice = styled.span`
@@ -182,6 +233,7 @@ const OldPrice = styled.span`
 const PlanDescription = styled.p`
   text-align: center;
   margin-bottom: 20px;
+  color: #666;
 `;
 
 const PlanLink = styled.a`
@@ -201,6 +253,8 @@ const PlanDetails = styled.div`
 const DetailsHeader = styled.h2`
   text-align: center;
   margin-bottom: 20px;
+  font-size: 22px;
+  color: #333;
 `;
 
 const DetailsTable = styled.div`
@@ -229,19 +283,22 @@ const TableCell = styled.div`
   padding: 10px;
   border: 1px solid #ccc;
   text-align: center;
+  color: #333;
 `;
 
 const ContinueButton = styled.button`
   width: 100%;
   padding: 15px;
-  background-color: #ff9900;
+  background-color: ${({ freePlan }) => (freePlan ? '#28a745' : '#ff9900')};
   color: #fff;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   font-size: 16px;
+  transition: background-color 0.3s;
+  margin-bottom: 20px;
   &:hover {
-    background-color: #cc7a00;
+    background-color: ${({ freePlan }) => (freePlan ? '#218838' : '#cc7a00')};
   }
 `;
 

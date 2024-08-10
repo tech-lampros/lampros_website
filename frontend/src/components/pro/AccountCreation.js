@@ -1,98 +1,141 @@
 // src/components/AccountCreation.js
+
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useMediaQuery } from 'react-responsive';
+import { useForm } from 'react-hook-form';
 import CompanyProfile from './CompanyProfile';
 import PlanSelection from './PlanSelection';
-import Payment from './Payment'
+import Payment from './Payment';
 
 const AccountCreation = () => {
+  const [formData, setFormData] = useState({});
   const [step, setStep] = useState(1);
   const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm();
+
+  const onSubmit = (data) => {
+    setFormData((prevData) => ({ ...prevData, ...data }));
+    setStep(2);
+  };
 
   return (
     <Container>
       <Stepper>
-        <Step
-          active={step === 1}
-          filled={step > 1}
-          onClick={() => setStep(1)}
-        >
+        <Step active={step === 1} filled={step > 1} onClick={() => setStep(1)}>
           <StepNumber active={step === 1} filled={step > 1} />
           Account creation
         </Step>
-        <Step
-          active={step === 2}
-          filled={step > 2}
-          onClick={() => setStep(2)}
-        >
+        <Step active={step === 2} filled={step > 2} onClick={() => setStep(2)}>
           <StepNumber active={step === 2} filled={step > 2} />
           Company Profile
         </Step>
-        <Step
-          active={step === 3}
-          filled={step > 3}
-          onClick={() => setStep(3)}
-        >
+        <Step active={step === 3} filled={step > 3} onClick={() => setStep(3)}>
           <StepNumber active={step === 3} filled={step > 3} />
           Plan selection
         </Step>
-        <Step
-          active={step === 4}
-          filled={step > 4}
-          onClick={() => setStep(4)}
-        >
+        <Step active={step === 4} filled={step > 4} onClick={() => setStep(4)}>
           <StepNumber active={step === 4} filled={step > 4} />
           Payment
         </Step>
       </Stepper>
       {step === 1 && (
         <FormContainer isMobile={isMobile}>
-          <Form>
+          <Form onSubmit={handleSubmit(onSubmit)}>
             <FormRow>
               <FormGroup>
-                <Label>Name</Label>
-                <Input type="text" placeholder="Enter your name" />
+                <InputWrapper>
+                  <Input
+                    type="text"
+                    placeholder=" "
+                    {...register('name', { required: 'Name is required' })}
+                  />
+                  <FloatingLabel>Name</FloatingLabel>
+                </InputWrapper>
+                {errors.name && <Error>{errors.name.message}</Error>}
               </FormGroup>
               <FormGroup>
-                <Label>Role</Label>
-                <Input type="text" placeholder="Eg: Interior Designer" />
+                <InputWrapper>
+                  <Input
+                    type="text"
+                    placeholder=" "
+                    {...register('role', { required: 'Role is required' })}
+                  />
+                  <FloatingLabel>Role</FloatingLabel>
+                </InputWrapper>
+                {errors.role && <Error>{errors.role.message}</Error>}
               </FormGroup>
             </FormRow>
             <FormRow>
               <FormGroup>
-                <Label>Phone Number</Label>
-                <Input type="text" placeholder="8023456789" />
+                <InputWrapper>
+                  <Input
+                    type="text"
+                    placeholder=" "
+                    {...register('phone', { required: 'Phone number is required' })}
+                  />
+                  <FloatingLabel>Phone Number</FloatingLabel>
+                </InputWrapper>
+                {errors.phone && <Error>{errors.phone.message}</Error>}
               </FormGroup>
               <FormGroup>
-                <Label>Email</Label>
-                <Input type="email" placeholder="Enter your mail id" />
+                <InputWrapper>
+                  <Input
+                    type="email"
+                    placeholder=" "
+                    {...register('email', { required: 'Email is required' })}
+                  />
+                  <FloatingLabel>Email</FloatingLabel>
+                </InputWrapper>
+                {errors.email && <Error>{errors.email.message}</Error>}
               </FormGroup>
             </FormRow>
             <FormRow>
               <FormGroup>
-                <Label>Place</Label>
-                <Input type="text" placeholder="Koduvally, Kozhikode, Kerala" />
+                <InputWrapper>
+                  <Input
+                    type="text"
+                    placeholder=" "
+                    {...register('place', { required: 'Place is required' })}
+                  />
+                  <FloatingLabel>Place</FloatingLabel>
+                </InputWrapper>
+                {errors.place && <Error>{errors.place.message}</Error>}
               </FormGroup>
               <FormGroup>
-                <Label>Age</Label>
-                <Input type="number" placeholder="Age" />
+                <InputWrapper>
+                  <Input
+                    type="number"
+                    placeholder=" "
+                    {...register('age', { required: 'Age is required' })}
+                  />
+                  <FloatingLabel>Age</FloatingLabel>
+                </InputWrapper>
+                {errors.age && <Error>{errors.age.message}</Error>}
               </FormGroup>
               <FormGroup>
-                <Label>Gender</Label>
-                <Select>
-                  <option>Select</option>
-                  <option>Male</option>
-                  <option>Female</option>
-                  <option>Other</option>
-                </Select>
+                <InputWrapper>
+                  <Select {...register('gender', { required: 'Gender is required' })}>
+                    <option value="">Select</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                  </Select>
+                  <FloatingLabel>Gender</FloatingLabel>
+                </InputWrapper>
+                {errors.gender && <Error>{errors.gender.message}</Error>}
               </FormGroup>
             </FormRow>
             <Terms>
               By clicking the button below, you consent to our <a href="#">Terms of Use</a> and for the Lampros family of companies to call or text you using automated technology at the phone numbers you provide, regarding leads and other products and services that may be of interest to you. Consent is not a condition of any purchase. <a href="#">Learn more</a>.
             </Terms>
-            <CreateAccountButton onClick={() => setStep(2)}>Create account</CreateAccountButton>
-            <LoginLink>Already have an account? <a href="#">Login</a></LoginLink>
+            <CreateAccountButton type="submit">Create account</CreateAccountButton>
+            {/* Removed LoginLink */}
           </Form>
           {!isMobile && (
             <InfoBox>
@@ -102,9 +145,9 @@ const AccountCreation = () => {
           )}
         </FormContainer>
       )}
-      {step === 2 && <CompanyProfile setStep={setStep} />}
-      {step === 3 && <PlanSelection setStep={setStep} />}
-      {step === 4 && <Payment setStep={setStep} />}
+      {step === 2 && <CompanyProfile setFormData={setFormData} setStep={setStep} formData={formData} />}
+      {step === 3 && <PlanSelection setStep={setStep} formData={formData} setFormData={setFormData} />}
+      {step === 4 && <Payment setStep={setStep}  />}
       {/* Add more steps as needed */}
     </Container>
   );
@@ -131,12 +174,11 @@ const Step = styled.div`
   padding: 10px;
   color: #000;
   cursor: pointer;
-
 `;
 
 const StepNumber = styled.div`
-  width: 24px;
-  height: 24px;
+  width: 15px;
+  height: 15px;
   margin: 0 auto;
   border: 2px solid ${({ active }) => (active ? '#FF8F2A' : '#ccc')};
   border-radius: 50%;
@@ -159,7 +201,7 @@ const FormContainer = styled.div`
   margin: 0 auto;
 `;
 
-const Form = styled.div`
+const Form = styled.form`
   flex: 1;
   padding: 20px;
 `;
@@ -174,26 +216,7 @@ const FormRow = styled.div`
 const FormGroup = styled.div`
   flex: 1;
   min-width: 220px;
-`;
-
-const Label = styled.label`
-  display: block;
-  margin-bottom: 5px;
-  font-weight: bold;
-`;
-
-const Input = styled.input`
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-`;
-
-const Select = styled.select`
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  position: relative;
 `;
 
 const Terms = styled.p`
@@ -220,15 +243,6 @@ const CreateAccountButton = styled.button`
   }
 `;
 
-const LoginLink = styled.p`
-  text-align: center;
-  margin-top: 20px;
-  a {
-    color: #007bff;
-    text-decoration: none;
-  }
-`;
-
 const InfoBox = styled.div`
   width: 300px;
   padding: 20px;
@@ -245,6 +259,63 @@ const InfoTitle = styled.h3`
 const InfoText = styled.p`
   font-size: 14px;
   color: #555;
+`;
+
+const Error = styled.span`
+  color: red;
+  font-size: 12px;
+`;
+
+const InputWrapper = styled.div`
+  position: relative;
+`;
+
+const FloatingLabel = styled.label`
+  position: absolute;
+  top: 16px; /* Adjust as needed */
+  left: 12px;
+  font-size: 16px; /* Adjust as needed */
+  color: #999;
+  transition: 0.2s ease all;
+  pointer-events: none;
+  font-weight: bold; /* Make label text bold */
+  background: #fff; /* Remove background */
+  padding: 0 4px; /* Add padding to remove border line effect */
+  z-index: 1; /* Ensure the label is above the input */
+`;
+
+const Input = styled.input`
+  width: 100%;
+  padding: 14px 12px; /* Adjust padding to ensure label fits */
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  box-sizing: border-box; /* Ensure padding and border are included in width */
+  
+  &:focus ~ ${FloatingLabel},
+  &:not(:placeholder-shown) ~ ${FloatingLabel} {
+    top: -10px; /* Adjust to position label at the top */
+    left: 12px; /* Adjust to align with input */
+    font-size: 12px; /* Adjust to make label smaller when floating */
+    color: #FF8F2A;
+  }
+`;
+
+const Select = styled.select`
+  width: 100%;
+  padding: 14px 12px; /* Adjust padding to ensure label fits */
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  box-sizing: border-box; /* Ensure padding and border are included in width */
+  
+  &:focus ~ ${FloatingLabel},
+  &:not(:placeholder-shown) ~ ${FloatingLabel} {
+    top: -10px; /* Adjust to position label at the top */
+    left: 12px; /* Adjust to align with select */
+    font-size: 12px; /* Adjust to make label smaller when floating */
+    color: #FF8F2A;
+  }
 `;
 
 export default AccountCreation;
