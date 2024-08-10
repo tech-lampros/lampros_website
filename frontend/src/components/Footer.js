@@ -26,17 +26,17 @@ const Footer = () => {
         <div className="footer-section links">
           <h2>Company</h2>
           <ul>
-            <li><button onClick={() => alert('About us clicked')} className="link-button">About us</button></li>
-            <li><button onClick={() => alert('Become a pro clicked')} className="link-button">Become a pro</button></li>
-            <li><button onClick={() => alert('Contact us clicked')} className="link-button">Contact us</button></li>
+            <li><button onClick={() => console.log('About us clicked')} className="link-button">About us</button></li>
+            <li><button onClick={() => console.log('Become a pro clicked')} className="link-button">Become a pro</button></li>
+            <li><button onClick={() => console.log('Contact us clicked')} className="link-button">Contact us</button></li>
           </ul>
         </div>
         <div className="footer-section links">
           <h2>Support</h2>
           <ul>
-            <li><button onClick={() => alert('Terms of services clicked')} className="link-button">Terms of services</button></li>
-            <li><button onClick={() => alert('Privacy policy clicked')} className="link-button">Privacy policy</button></li>
-            <li><button onClick={() => alert('Legal clicked')} className="link-button">Legal</button></li>
+            <li><button onClick={() => console.log('Terms of services clicked')} className="link-button">Terms of services</button></li>
+            <li><button onClick={() => console.log('Privacy policy clicked')} className="link-button">Privacy policy</button></li>
+            <li><button onClick={() => console.log('Legal clicked')} className="link-button">Legal</button></li>
           </ul>
         </div>
       </div>
