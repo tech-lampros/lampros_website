@@ -69,9 +69,8 @@ const PlanSelection = ({ setStep, formData, setFormData }) => {
         const result = await response.json();
         document.cookie = `selectedUserType=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`;
         console.log('Success:', result);
-        setStep(4); // Proceed to the next step if successful
+        alert("Registered successfully") // Proceed to the next step if successful
       } catch (error) {
-        document.cookie = `selectedUserType=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`;
         console.error('Error:', error);
       }
     }
