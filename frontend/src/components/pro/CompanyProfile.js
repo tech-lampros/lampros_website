@@ -1,4 +1,3 @@
-// src/components/CompanyProfile.js
 import React from 'react';
 import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
@@ -11,7 +10,19 @@ const CompanyProfile = ({ setStep, setFormData }) => {
   } = useForm();
 
   const onSubmit = (data) => {
-    setFormData((prevData) => ({ ...prevData, ...data }));
+    // Map form data to new structure with gstNumber
+    const updatedData = {
+      companyName: data.companyName,
+      company_email: data.email,
+      company_phone: data.phone,
+      company_address: data.address,
+      company_city: data.city,
+      company_pincode: data.pincode,
+      company_gstNumber: data.gstNumber // Updated key
+    };
+
+    // Update the form data in the parent component
+    setFormData((prevData) => ({ ...prevData, ...updatedData }));
     setStep(3);
   };
 
@@ -96,11 +107,11 @@ const CompanyProfile = ({ setStep, setFormData }) => {
               <Input
                 type="text"
                 placeholder=" "
-                {...register('cstNumber', { required: 'CST Number is required' })}
+                {...register('gstNumber', { required: 'GST Number is required' })}
               />
-              <FloatingLabel>CST Number</FloatingLabel>
+              <FloatingLabel>GST Number</FloatingLabel> {/* Updated label */}
             </InputWrapper>
-            {errors.cstNumber && <Error>{errors.cstNumber.message}</Error>}
+            {errors.gstNumber && <Error>{errors.gstNumber.message}</Error>}
           </FormGroup>
         </FormRow>
         <ContinueButton type="submit">Continue</ContinueButton>
@@ -114,6 +125,9 @@ const CompanyProfile = ({ setStep, setFormData }) => {
     </Container>
   );
 };
+
+// Styled components remain the same
+
 
 const Container = styled.div`
   display: flex;

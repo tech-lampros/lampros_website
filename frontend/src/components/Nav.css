@@ -6,6 +6,9 @@
 
 .custom-brand img {
   margin-right: 10px;
+  max-width: 200px;
+  width: 200px;
+  height: auto;
 }
 
 .custom-brand {

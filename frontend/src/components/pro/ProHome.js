@@ -2,12 +2,20 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useMediaQuery } from 'react-responsive';
+import Cookies from 'js-cookie';
 import img10 from '../../assets/img10.jpg'; // Replace with the actual path
 import img11 from '../../assets/img11.jpg'; // Replace with the actual path
 import img12 from '../../assets/img12.jpg'; // Replace with the actual path
 
 const ProHome = ({ onGetStarted }) => {
   const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
+
+  const handleGetStarted = (type) => {
+    // Set the selected type in a cookie
+    Cookies.set('selectedUserType', type, { expires: 7 }); // Cookie expires in 7 days
+    // Call the onGetStarted callback
+    onGetStarted();
+  };
 
   return (
     <Container>
@@ -22,17 +30,17 @@ const ProHome = ({ onGetStarted }) => {
         <Card>
           <img src={img10} alt="Professionals" />
           <CardTitle>Professionals</CardTitle>
-          <Button onClick={onGetStarted}>Get started</Button>
+          <Button onClick={() => handleGetStarted('Professionals')}>Get started</Button>
         </Card>
         <Card>
           <img src={img11} alt="Product Sellers" />
           <CardTitle>Product Sellers</CardTitle>
-          <Button onClick={onGetStarted}>Get started</Button>
+          <Button onClick={() => handleGetStarted('Product Sellers')}>Get started</Button>
         </Card>
         <Card>
           <img src={img12} alt="Realtor" />
           <CardTitle>Realtor</CardTitle>
-          <Button onClick={onGetStarted}>Get started</Button>
+          <Button onClick={() => handleGetStarted('Realtor')}>Get started</Button>
         </Card>
       </CardContainer>
     </Container>
