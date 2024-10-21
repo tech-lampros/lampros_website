@@ -17,6 +17,7 @@ import Professionals from './components/Professionals';
 import ProLogin from './components/pro/ProLogin'; 
 import Prodash from './components/pro/ProDash'; // Import ProDash component
 import AddProduct from './components/pro/AddProduct'; // Import AddProduct component
+import PrivacyPolicy from './components/Privacy';
 
 function App() {
   const [view, setView] = useState('home');
@@ -28,11 +29,12 @@ function App() {
 
   const isProDash = location.pathname === '/proDash'; // Check if the current route is "/proDash"
   const isAddProduct = location.pathname === '/add-product'; // Check if the current route is "/add-product"
+  const isPrivacy = location.pathname === '/privacy_policy';
 
   return (
     <div className="App">
       {/* Only show the navigation, content, and footer if NOT on the ProDash or AddProduct routes */}
-      {!isProDash && !isAddProduct && (
+      {!isProDash && !isAddProduct && !isPrivacy && (
         <>
           <div className="desktop-view">
             <Nav
@@ -88,6 +90,7 @@ function App() {
       <Routes>
         <Route path="/proDash" element={<Prodash />} />
         <Route path="/add-product" element={<AddProduct />} />
+        <Route path="/privacy_policy" element={<PrivacyPolicy/>} />
       </Routes>
     </div>
   );
