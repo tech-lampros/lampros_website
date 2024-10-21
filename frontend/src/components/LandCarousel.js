@@ -1,45 +1,69 @@
-import React from 'react';
+// Land_Carousel.js
+import React, { useState } from 'react';
 import { Carousel } from 'react-responsive-carousel';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import './Land_Carousel.css';
-import data from '../assets/carouselData.json';
+import ConsultationForm from './Consultation/ConsultationForm'; // Ensure correct path
+import data from '../assets/carouselData.json'; // Your carousel data
 
-const Land_Carousel = () => {
-  const whatsappNumber = "917592900050"; // Replace with your WhatsApp number
-  const message = "Hello! I came across your website and am interested in learning more about your services. Could we discuss this further? Looking forward to your response!"; // Casual yet professional message
+const LandCarousel = () => {
+  const [showConsultationForm, setShowConsultationForm] = useState(false);
+
+  const handleConsultationClick = () => {
+    setShowConsultationForm(true);
+  };
+
+  const closeConsultationForm = () => {
+    setShowConsultationForm(false);
+  };
 
   return (
-    <Carousel
-      showThumbs={false}
-      infiniteLoop={true}
-      autoPlay={true}
-      interval={2000}
-      showStatus={false}
-      showArrows={true}
-      useKeyboardArrows={true}
-    >
-      {data.map((item, index) => (
-        <div key={index} className="carousel-slide">
-          <div className="carousel-content">
-            <h2>{item.title}</h2>
-            <h2 className="highlighted-text">{item.highlightedText}</h2>
-            <p>{item.subText}</p>
-            <a 
-              href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`}
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="consultation-button"
-            >
-              Get Free Consultation
-            </a>
+    <div>
+      {/* Carousel Section */}
+      <Carousel
+        showThumbs={false}
+        infiniteLoop={true}
+        autoPlay={true}
+        interval={2000}
+        showStatus={false}
+        showArrows={true}
+        useKeyboardArrows={true}
+      >
+        {data.map((item, index) => (
+          <div key={index} className="carousel-slide">
+            <div className="carousel-content">
+              <h2>{item.title}</h2>
+              <h2 className="highlighted-text">{item.highlightedText}</h2>
+              <p>{item.subText}</p>
+              <button 
+                onClick={handleConsultationClick} 
+                className="consultation-button"
+              >
+                Get Free Consultation
+              </button>
+            </div>
+            <div className="carousel-image">
+              <img src={item.imageUrl} alt={`Slide ${index}`} />
+            </div>
           </div>
-          <div className="carousel-image">
-            <img src={item.imageUrl} alt={`Slide ${index}`} />
+        ))}
+      </Carousel>
+
+      {/* Consultation Form Modal (Conditional Rendering) */}
+      {showConsultationForm && (
+        <div className="modal-backdrop" onClick={closeConsultationForm}>
+          <div 
+            className="modal-content" 
+            onClick={(e) => e.stopPropagation()} // Prevents closing modal when clicking inside the form
+          >
+            <ConsultationForm closeForm={closeConsultationForm} />
           </div>
         </div>
-      ))}
-    </Carousel>
+      )}
+    </div>
   );
 };
 
-export default Land_Carousel;
+
+
+export default LandCarousel;

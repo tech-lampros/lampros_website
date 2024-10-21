@@ -7,6 +7,68 @@
   flex-direction: column; /* Change to column for smaller screens */
 }
 
+/* Land_Carousel.css */
+
+/* Backdrop to overlay the carousel */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Dims the background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Ensures the backdrop is above the carousel */
+}
+
+/* Modal content styles */
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 400px;
+  max-width: 90%; /* Responsive design */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  position: relative;
+  z-index: 1001; /* Keeps content above the backdrop */
+}
+
+/* Carousel slide layout */
+.carousel-slide {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 20px;
+}
+
+.carousel-content h2 {
+  margin: 10px 0;
+}
+
+.consultation-button {
+  margin-top: 15px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.consultation-button:hover {
+  background-color: #0056b3;
+}
+
+.carousel-image img {
+  max-width: 100%;
+  height: auto;
+}
+
+
 .carousel-content {
   flex: 1;
   padding: 0 20px;
