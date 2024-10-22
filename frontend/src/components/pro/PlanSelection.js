@@ -23,6 +23,7 @@ const planPrices = {
 const PlanSelection = ({ setStep, formData, setFormData }) => {
   const [selectedDuration, setSelectedDuration] = useState('6 Months');
   const [selectedPlan, setSelectedPlan] = useState('Free');
+  const [couponCode, setCouponCode] = useState('');
 
   useEffect(() => {
     // Get the selected plan type from cookies
@@ -33,10 +34,31 @@ const PlanSelection = ({ setStep, formData, setFormData }) => {
   }, []);
 
   const handleContinue = async () => {
+    // console.log({...formData})
     const updatedFormData = {
-      ...formData,
+        phoneNumber: formData.phone,
+        fname: formData.name,
+        email: formData.email,
+        role: formData.role,
+        companyDetails: {
+          companyName: formData.companyName,
+          companyAddress: {
+            place: formData.company_address,
+            pincode: formData.company_pincode,
+          },
+          companyEmail: formData.company_email,
+          companyPhone: formData.company_phone,
+          companyGstNumber: formData.company_gstNumber,
+        },
+        address: {
+          place: formData.place,
+          pincode: formData.pincode || '',
+        },
+        profileImage:
+          'https://placehold.co/600x600/D8D2C2/4A4947/png?font=lora&text=nishmal',
       plan: selectedPlan,
       duration: selectedDuration,
+      couponCode: couponCode,
     };
 
     setFormData(updatedFormData);
@@ -124,6 +146,12 @@ const PlanSelection = ({ setStep, formData, setFormData }) => {
         ))}
       </PlanContainer>
       <PlanDetails>
+      <CouponInput
+          type="text"
+          placeholder="Enter coupon code"
+          value={couponCode}
+          onChange={(e) => setCouponCode(e.target.value)}
+        />
         <ContinueButton
           onClick={handleContinue}
           freePlan={selectedPlan === 'Free'}
@@ -264,6 +292,16 @@ const Container = styled.div`
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
+`;
+
+const CouponInput = styled.input`
+  padding: 10px;
+  width: 50%;
+  max-width: 400px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
 `;
 
 const Title = styled.h2`
