@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { FiHome, FiBox, FiClipboard, FiBarChart2, FiUser, FiSettings } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import logo from '../../assets/logo.png';
 
 const Prodash = () => {
   const navigate = useNavigate(); // Initialize useNavigate for navigation
@@ -10,7 +11,7 @@ const Prodash = () => {
     <DashboardContainer>
       <Sidebar>
         <LogoContainer>
-          <Logo src="/path/to/your/logo.png" alt="Lampros Logo" />
+          <Logo src={logo} alt="Lampros Logo"  width={250}/>
           <BrandName>Seller</BrandName>
         </LogoContainer>
         <NavItem active>

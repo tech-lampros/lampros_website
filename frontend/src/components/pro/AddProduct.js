@@ -2,19 +2,24 @@
 
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm, Controller, useWatch } from 'react-hook-form';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Select, { components } from 'react-select';
+import { FaSearch } from 'react-icons/fa';
+import { format } from 'date-fns';
+import logo from '../../assets/logo.png';
 
 // Custom Option Component with Image
 const Option = (props) => (
   <components.Option {...props}>
-    <img
-      src={props?.data?.image?.url? props.data.image.url:''}
-      alt={props?.data?.image?.altText ? props.data.image.altText : ''}
-      style={{ width: '30px', marginRight: '10px', borderRadius: '4px' }}
-    />
+    {props?.data?.image?.url && (
+      <img
+        src={props.data.image.url}
+        alt={props.data.image.altText || ''}
+        style={{ width: '30px', marginRight: '10px', borderRadius: '4px' }}
+      />
+    )}
     {props.label}
   </components.Option>
 );
@@ -22,11 +27,13 @@ const Option = (props) => (
 // Custom SingleValue Component with Image
 const SingleValue = (props) => (
   <components.SingleValue {...props}>
-    <img
-      src={props?.data?.image?.url? props.data.image.url:''}
-      alt={props?.data?.image?.altText? props.data.image.altText : ''}
-      style={{ width: '30px', marginRight: '10px', borderRadius: '4px' }}
-    />
+    {props?.data?.image?.url && (
+      <img
+        src={props.data.image.url}
+        alt={props.data.image.altText || ''}
+        style={{ width: '30px', marginRight: '10px', borderRadius: '4px' }}
+      />
+    )}
     {props.data.label}
   </components.SingleValue>
 );
@@ -34,7 +41,15 @@ const SingleValue = (props) => (
 const AddProductForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [uploadedImages, setUploadedImages] = useState([]);
-  const { register, handleSubmit, reset, setValue, control, formState: { errors } } = useForm();
+  const [isUploading, setIsUploading] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    reset,
+    setValue,
+    control,
+    formState: { errors },
+  } = useForm();
   const navigate = useNavigate();
 
   // State for Categories
@@ -144,6 +159,7 @@ const AddProductForm = () => {
     files.forEach((file) => formData.append('image', file));
 
     try {
+      setIsUploading(true);
       const response = await axios.post(
         'https://lampros-backend.vercel.app/api/user/upload-images',
         formData,
@@ -162,6 +178,8 @@ const AddProductForm = () => {
     } catch (error) {
       console.error('Image upload failed:', error);
       // Optionally, set an error state to display to the user
+    } finally {
+      setIsUploading(false);
     }
   };
 
@@ -206,15 +224,16 @@ const AddProductForm = () => {
           productCareInstructions: data.productCareInstructions,
         },
         manufactureDetails: {
-          countryOfOrigin: data.countryOfOrigin,
-          deliveryCharge: parseFloat(data.deliveryCharge),
           manufacturer: data.manufacturer,
+          manufacturerDate: data.manufacturerDate || '',
+          countryOfOrigin: data.countryOfOrigin || '',
+          deliveryCharge: data.deliveryCharge ? parseFloat(data.deliveryCharge) : 0,
         },
         warrantyAndCertifications: {
           warranty: data.warranty === 'true',
           warrantyDuration: {
-            months: parseInt(data.warrantyMonths, 10),
-            years: parseInt(data.warrantyYears, 10),
+            months: data.warranty === 'true' ? parseInt(data.warrantyMonths, 10) : 0,
+            years: data.warranty === 'true' ? parseInt(data.warrantyYears, 10) : 0,
           },
           isoCertified: data.isoCertified === 'true',
         },
@@ -244,602 +263,760 @@ const AddProductForm = () => {
     }
   };
 
+  // Get Current Date
+  const currentDate = format(new Date(), 'MMMM dd, yyyy');
+
+  // Watch warranty to conditionally display warranty duration fields
+  const watchWarranty = useWatch({
+    control,
+    name: 'warranty',
+    defaultValue: null,
+  });
+
   return (
-    <FormContainer onSubmit={handleSubmit(onSubmit)}>
-      <SectionTitle>Add New Product</SectionTitle>
+    <MainContainer>
+      {/* Header */}
+      <Header>
+        <HeaderLeft>
+          <Logo src={logo} alt="Logo" />
+          <SearchBox>
+            <FaSearch />
+            <SearchInput type="text" placeholder="Search..." aria-label="Search" />
+          </SearchBox>
+          <DateDisplay>{currentDate}</DateDisplay>
+        </HeaderLeft>
+        <HeaderRight>
+          <ProfileContainer>
+            <ProfileImage src="/path-to-profile.png" alt="Profile" />
+            <UserName>Alex</UserName>
+          </ProfileContainer>
+        </HeaderRight>
+      </Header>
 
-      {/* Seller Information */}
-      <Section>
-        <SectionSubtitle>Seller Information</SectionSubtitle>
-        <Row>
-          <Column>
-            <Label htmlFor="sellerName">Seller Name</Label>
-            <Input
-              id="sellerName"
-              placeholder="Enter seller name"
-              {...register('sellerName', { required: 'Seller Name is required' })}
-            />
-            {errors.sellerName && <ErrorMessage>{errors.sellerName.message}</ErrorMessage>}
-          </Column>
-          <Column>
-            <Label htmlFor="phoneNumber">Phone Number</Label>
-            <Input
-              type="tel"
-              id="phoneNumber"
-              placeholder="Enter phone number"
-              {...register('phoneNumber', {
-                required: 'Phone Number is required',
-                pattern: {
-                  value: /^[0-9]{10,15}$/,
-                  message: 'Invalid phone number',
-                },
-              })}
-            />
-            {errors.phoneNumber && <ErrorMessage>{errors.phoneNumber.message}</ErrorMessage>}
-          </Column>
-        </Row>
-      </Section>
+      {/* Body */}
+      <BodyContainer>
+        {/* Left Section (40%) */}
+        <LeftSection>
+          {/* Section 1: Product Images */}
+          <Box>
+            <SectionSubtitle>Product Images</SectionSubtitle>
+            <ImageUploadContainer>
+              <Input
+                type="file"
+                id="images"
+                multiple
+                accept="image/*"
+                onChange={handleImageUpload}
+                aria-label="Upload Images"
+                placeholder="Upload Images"
+              />
+              {isUploading && <Loader>Uploading...</Loader>}
+            </ImageUploadContainer>
 
-      {/* Product Images */}
-      <Section>
-        <SectionSubtitle>Product Images</SectionSubtitle>
-        <Row>
-          <Column>
-            <Label htmlFor="images">Upload Images</Label>
-            <Input
-              type="file"
-              id="images"
-              multiple
-              accept="image/*"
-              onChange={handleImageUpload}
-            />
-          </Column>
-        </Row>
+            <ImagePreviewContainer>
+              {uploadedImages.map((img, index) => (
+                <ImagePreview key={index} src={img.url} alt={`Uploaded ${index + 1}`} />
+              ))}
+            </ImagePreviewContainer>
+          </Box>
 
-        <ImagePreviewContainer>
-          {uploadedImages.map((img, index) => (
-            <ImagePreview key={index} src={img.url} alt={`Uploaded ${index + 1}`} />
-          ))}
-        </ImagePreviewContainer>
-      </Section>
-
-      {/* Category Selection */}
-      <Section>
-        <SectionSubtitle>Category Selection</SectionSubtitle>
-        <Row>
-          <Column>
-            <Label htmlFor="category">Category</Label>
-            <Controller
-              name="category"
-              control={control}
-              render={() => (
-                <Select
-                  id="category"
-                  options={categories}
-                  components={{ Option, SingleValue }}
-                  value={selectedCategory}
-                  onChange={handleCategoryChange}
-                  placeholder="Select Category"
-                  isClearable
+          {/* Section 2: Manufacturer Details */}
+          <Box>
+            <SectionSubtitle>Manufacturer Details</SectionSubtitle>
+            <Row>
+              <Column>
+                <Input
+                  type="text"
+                  id="manufacturer"
+                  placeholder="Manufacturer *"
+                  {...register('manufacturer', { required: 'Manufacturer is required' })}
+                  aria-label="Manufacturer"
                 />
-              )}
-            />
-          </Column>
-          <Column>
-            <Label htmlFor="subCategory">Subcategory</Label>
-            <Controller
-              name="subCategory"
-              control={control}
-              render={() => (
-                <Select
-                  id="subCategory"
-                  options={subCategories}
-                  components={{ Option, SingleValue }}
-                  value={selectedSubCategory}
-                  onChange={handleSubCategoryChange}
-                  placeholder="Select Subcategory"
-                  isClearable
-                  isDisabled={!selectedCategory}
+                {errors.manufacturer && <ErrorMessage>{errors.manufacturer.message}</ErrorMessage>}
+              </Column>
+              <Column>
+                <Input
+                  type="date"
+                  id="manufacturerDate"
+                  placeholder="Manufacturer Date"
+                  {...register('manufacturerDate')}
+                  aria-label="Manufacturer Date"
                 />
-              )}
-            />
-          </Column>
-        </Row>
-
-        <Row>
-          <Column>
-            <Label htmlFor="type">Type</Label>
-            <Controller
-              name="type"
-              control={control}
-              render={() => (
-                <Select
-                  id="type"
-                  options={types}
-                  components={{ Option, SingleValue }}
-                  value={selectedType}
-                  onChange={handleTypeChange}
-                  placeholder="Select Type"
-                  isClearable
-                  isDisabled={!selectedSubCategory}
+              </Column>
+            </Row>
+            <Row>
+              <Column>
+                <Input
+                  type="text"
+                  id="countryOfOrigin"
+                  placeholder="Country of Origin"
+                  {...register('countryOfOrigin')}
+                  aria-label="Country of Origin"
                 />
-              )}
-            />
-          </Column>
-          <Column>
-            <Label htmlFor="subType">Subtype</Label>
-            <Controller
-              name="subType"
-              control={control}
-              render={() => (
-                <Select
-                  id="subType"
-                  options={subTypes}
-                  components={{ Option, SingleValue }}
-                  value={selectedSubType}
-                  onChange={handleSubTypeChange}
-                  placeholder="Select Subtype"
-                  isClearable
-                  isDisabled={!selectedType}
+              </Column>
+              <Column>
+                <Input
+                  type="number"
+                  step="0.01"
+                  id="deliveryCharge"
+                  placeholder="Delivery Charge ($)"
+                  {...register('deliveryCharge', {
+                    min: { value: 0, message: 'Delivery Charge must be positive' },
+                  })}
+                  aria-label="Delivery Charge"
                 />
-              )}
-            />
-          </Column>
-        </Row>
-      </Section>
+                {errors.deliveryCharge && <ErrorMessage>{errors.deliveryCharge.message}</ErrorMessage>}
+              </Column>
+            </Row>
+          </Box>
 
-      {/* Product Details */}
-      <Section>
-        <SectionSubtitle>Product Details</SectionSubtitle>
-        <Row>
-          <Column>
-            <Label htmlFor="productName">Product Name</Label>
-            <Input
-              id="productName"
-              placeholder="Enter product name"
-              {...register('productName', { required: 'Product Name is required' })}
-            />
-            {errors.productName && <ErrorMessage>{errors.productName.message}</ErrorMessage>}
-          </Column>
-          <Column>
-            <Label htmlFor="price">Price ($)</Label>
-            <Input
-              type="number"
-              step="0.01"
-              id="price"
-              placeholder="Enter price"
-              {...register('price', {
-                required: 'Price is required',
-                min: { value: 0, message: 'Price must be positive' },
-              })}
-            />
-            {errors.price && <ErrorMessage>{errors.price.message}</ErrorMessage>}
-          </Column>
-        </Row>
-
-        <Row>
-          <Column>
-            <Label htmlFor="stockQuantity">Stock Quantity</Label>
-            <Input
-              type="number"
-              id="stockQuantity"
-              placeholder="Enter stock quantity"
-              {...register('stockQuantity', {
-                required: 'Stock Quantity is required',
-                min: { value: 0, message: 'Stock Quantity cannot be negative' },
-              })}
-            />
-            {errors.stockQuantity && <ErrorMessage>{errors.stockQuantity.message}</ErrorMessage>}
-          </Column>
-          <Column>
-            <Label htmlFor="about">About</Label>
-            <TextArea
-              id="about"
-              placeholder="Enter product description"
-              {...register('about', { required: 'About section is required' })}
-            />
-            {errors.about && <ErrorMessage>{errors.about.message}</ErrorMessage>}
-          </Column>
-        </Row>
-      </Section>
-
-      {/* Technical Details */}
-      <Section>
-        <SectionSubtitle>Technical Details</SectionSubtitle>
-        <Row>
-          <Column>
-            <Label htmlFor="brandName">Brand Name</Label>
-            <Input
-              id="brandName"
-              placeholder="Enter brand name"
-              {...register('brandName', { required: 'Brand Name is required' })}
-            />
-            {errors.brandName && <ErrorMessage>{errors.brandName.message}</ErrorMessage>}
-          </Column>
-          <Column>
-            <Label htmlFor="color">Color</Label>
-            <Input
-              id="color"
-              placeholder="Enter color"
-              {...register('color', { required: 'Color is required' })}
-            />
-            {errors.color && <ErrorMessage>{errors.color.message}</ErrorMessage>}
-          </Column>
-        </Row>
-
-        <Row>
-          <Column>
-            <Label htmlFor="material">Material</Label>
-            <Input
-              id="material"
-              placeholder="Enter material"
-              {...register('material', { required: 'Material is required' })}
-            />
-            {errors.material && <ErrorMessage>{errors.material.message}</ErrorMessage>}
-          </Column>
-          <Column>
-            <Label htmlFor="weight">Weight (kg)</Label>
-            <Input
-              type="number"
-              step="0.1"
-              id="weight"
-              placeholder="Enter weight"
-              {...register('weight', {
-                required: 'Weight is required',
-                min: { value: 0, message: 'Weight must be positive' },
-              })}
-            />
-            {errors.weight && <ErrorMessage>{errors.weight.message}</ErrorMessage>}
-          </Column>
-        </Row>
-
-        <Row>
-          <Column>
-            <Label htmlFor="width">Width (cm)</Label>
-            <Input
-              type="number"
-              step="0.1"
-              id="width"
-              placeholder="Enter width"
-              {...register('width', {
-                required: 'Width is required',
-                min: { value: 0, message: 'Width must be positive' },
-              })}
-            />
-            {errors.width && <ErrorMessage>{errors.width.message}</ErrorMessage>}
-          </Column>
-          <Column>
-            <Label htmlFor="height">Height (cm)</Label>
-            <Input
-              type="number"
-              step="0.1"
-              id="height"
-              placeholder="Enter height"
-              {...register('height', {
-                required: 'Height is required',
-                min: { value: 0, message: 'Height must be positive' },
-              })}
-            />
-            {errors.height && <ErrorMessage>{errors.height.message}</ErrorMessage>}
-          </Column>
-          <Column>
-            <Label htmlFor="depth">Depth (cm)</Label>
-            <Input
-              type="number"
-              step="0.1"
-              id="depth"
-              placeholder="Enter depth"
-              {...register('depth', {
-                required: 'Depth is required',
-                min: { value: 0, message: 'Depth must be positive' },
-              })}
-            />
-            {errors.depth && <ErrorMessage>{errors.depth.message}</ErrorMessage>}
-          </Column>
-        </Row>
-
-        <Row>
-          <Column>
-            <Label htmlFor="baseWidth">Base Width (cm)</Label>
-            <Input
-              type="number"
-              step="0.1"
-              id="baseWidth"
-              placeholder="Enter base width"
-              {...register('baseWidth', {
-                required: 'Base Width is required',
-                min: { value: 0, message: 'Base Width must be positive' },
-              })}
-            />
-            {errors.baseWidth && <ErrorMessage>{errors.baseWidth.message}</ErrorMessage>}
-          </Column>
-          <Column>
-            <Label htmlFor="style">Style</Label>
-            <Input
-              id="style"
-              placeholder="Enter style"
-              {...register('style', { required: 'Style is required' })}
-            />
-            {errors.style && <ErrorMessage>{errors.style.message}</ErrorMessage>}
-          </Column>
-        </Row>
-
-        <Row>
-          <Column>
-            <Label htmlFor="installationType">Installation Type</Label>
-            <Input
-              id="installationType"
-              placeholder="Enter installation type"
-              {...register('installationType', { required: 'Installation Type is required' })}
-            />
-            {errors.installationType && <ErrorMessage>{errors.installationType.message}</ErrorMessage>}
-          </Column>
-          <Column>
-            <Label htmlFor="finishType">Finish Type</Label>
-            <Input
-              id="finishType"
-              placeholder="Enter finish type"
-              {...register('finishType', { required: 'Finish Type is required' })}
-            />
-            {errors.finishType && <ErrorMessage>{errors.finishType.message}</ErrorMessage>}
-          </Column>
-        </Row>
-
-        <Row>
-          <Column>
-            <Label htmlFor="drainType">Drain Type</Label>
-            <Input
-              id="drainType"
-              placeholder="Enter drain type"
-              {...register('drainType', { required: 'Drain Type is required' })}
-            />
-            {errors.drainType && <ErrorMessage>{errors.drainType.message}</ErrorMessage>}
-          </Column>
-          <Column>
-            <Label htmlFor="seatMaterial">Seat Material</Label>
-            <Input
-              id="seatMaterial"
-              placeholder="Enter seat material"
-              {...register('seatMaterial', { required: 'Seat Material is required' })}
-            />
-            {errors.seatMaterial && <ErrorMessage>{errors.seatMaterial.message}</ErrorMessage>}
-          </Column>
-        </Row>
-
-        <Row>
-          <Column>
-            <Label htmlFor="shape">Shape</Label>
-            <Input
-              id="shape"
-              placeholder="Enter shape"
-              {...register('shape', { required: 'Shape is required' })}
-            />
-            {errors.shape && <ErrorMessage>{errors.shape.message}</ErrorMessage>}
-          </Column>
-          <Column>
-            <Label htmlFor="specialFeatures">Special Features</Label>
-            <TextArea
-              id="specialFeatures"
-              placeholder="Enter special features"
-              {...register('specialFeatures', { required: 'Special Features are required' })}
-            />
-            {errors.specialFeatures && <ErrorMessage>{errors.specialFeatures.message}</ErrorMessage>}
-          </Column>
-        </Row>
-
-        <Row>
-          <Column>
-            <Label htmlFor="productModelNumber">Product Model Number</Label>
-            <Input
-              id="productModelNumber"
-              placeholder="Enter product model number"
-              {...register('productModelNumber', { required: 'Product Model Number is required' })}
-            />
-            {errors.productModelNumber && <ErrorMessage>{errors.productModelNumber.message}</ErrorMessage>}
-          </Column>
-          <Column>
-            <Label htmlFor="asinNumber">ASIN Number</Label>
-            <Input
-              id="asinNumber"
-              placeholder="Enter ASIN number"
-              {...register('asinNumber', { required: 'ASIN Number is required' })}
-            />
-            {errors.asinNumber && <ErrorMessage>{errors.asinNumber.message}</ErrorMessage>}
-          </Column>
-        </Row>
-
-        <Row>
-          <Column>
-            <Label htmlFor="productCareInstructions">Product Care Instructions</Label>
-            <TextArea
-              id="productCareInstructions"
-              placeholder="Enter care instructions"
-              {...register('productCareInstructions', { required: 'Care Instructions are required' })}
-            />
-            {errors.productCareInstructions && <ErrorMessage>{errors.productCareInstructions.message}</ErrorMessage>}
-          </Column>
-        </Row>
-      </Section>
-
-      {/* Manufacture Details */}
-      <Section>
-        <SectionSubtitle>Manufacture Details</SectionSubtitle>
-        <Row>
-          <Column>
-            <Label htmlFor="countryOfOrigin">Country of Origin</Label>
-            <Input
-              id="countryOfOrigin"
-              placeholder="Enter country of origin"
-              {...register('countryOfOrigin', { required: 'Country of Origin is required' })}
-            />
-            {errors.countryOfOrigin && <ErrorMessage>{errors.countryOfOrigin.message}</ErrorMessage>}
-          </Column>
-          <Column>
-            <Label htmlFor="deliveryCharge">Delivery Charge ($)</Label>
-            <Input
-              type="number"
-              step="0.01"
-              id="deliveryCharge"
-              placeholder="Enter delivery charge"
-              {...register('deliveryCharge', {
-                required: 'Delivery Charge is required',
-                min: { value: 0, message: 'Delivery Charge must be positive' },
-              })}
-            />
-            {errors.deliveryCharge && <ErrorMessage>{errors.deliveryCharge.message}</ErrorMessage>}
-          </Column>
-        </Row>
-        <Row>
-          <Column>
-            <Label htmlFor="manufacturer">Manufacturer</Label>
-            <Input
-              id="manufacturer"
-              placeholder="Enter manufacturer"
-              {...register('manufacturer', { required: 'Manufacturer is required' })}
-            />
-            {errors.manufacturer && <ErrorMessage>{errors.manufacturer.message}</ErrorMessage>}
-          </Column>
-        </Row>
-      </Section>
-
-      {/* Warranty and Certifications */}
-      <Section>
-        <SectionSubtitle>Warranty and Certifications</SectionSubtitle>
-        <Row>
-          <Column>
-            <Label htmlFor="warranty">Warranty</Label>
-            <Controller
-              name="warranty"
-              control={control}
-              defaultValue={null}
-              rules={{ required: 'Warranty selection is required' }}
-              render={({ field }) => (
-                <Select
-                  id="warranty"
-                  options={[
-                    { value: 'true', label: 'Yes' },
-                    { value: 'false', label: 'No' },
-                  ]}
-                  value={field.value ? { value: field.value, label: field.value === 'true' ? 'Yes' : 'No' } : null}
-                  onChange={(selected) => field.onChange(selected ? selected.value : null)}
-                  placeholder="Select Warranty Option"
-                  isClearable
+          {/* Section 3: Warranty and ISO Certification */}
+          <Box>
+            <SectionSubtitle>Warranty and Certifications</SectionSubtitle>
+            <Row>
+              <Column>
+                <Controller
+                  name="warranty"
+                  control={control}
+                  defaultValue={null}
+                  rules={{ required: 'Warranty selection is required' }}
+                  render={({ field }) => (
+                    <Select
+                      {...field}
+                      options={[
+                        { value: 'true', label: 'Yes' },
+                        { value: 'false', label: 'No' },
+                      ]}
+                      placeholder="Warranty *"
+                      isClearable
+                      components={{ Option, SingleValue }}
+                      aria-label="Warranty"
+                    />
+                  )}
                 />
+                {errors.warranty && <ErrorMessage>{errors.warranty.message}</ErrorMessage>}
+              </Column>
+              {watchWarranty === 'true' && (
+                <>
+                  <Column>
+                    <Input
+                      type="number"
+                      id="warrantyMonths"
+                      placeholder="Warranty Duration (Months) *"
+                      {...register('warrantyMonths', {
+                        required: 'Warranty duration in months is required',
+                        min: { value: 0, message: 'Duration must be positive' },
+                      })}
+                      aria-label="Warranty Duration Months"
+                    />
+                    {errors.warrantyMonths && (
+                      <ErrorMessage>{errors.warrantyMonths.message}</ErrorMessage>
+                    )}
+                  </Column>
+                  <Column>
+                    <Input
+                      type="number"
+                      id="warrantyYears"
+                      placeholder="Warranty Duration (Years) *"
+                      {...register('warrantyYears', {
+                        required: 'Warranty duration in years is required',
+                        min: { value: 0, message: 'Duration must be positive' },
+                      })}
+                      aria-label="Warranty Duration Years"
+                    />
+                    {errors.warrantyYears && (
+                      <ErrorMessage>{errors.warrantyYears.message}</ErrorMessage>
+                    )}
+                  </Column>
+                </>
               )}
-            />
-            {errors.warranty && <ErrorMessage>{errors.warranty.message}</ErrorMessage>}
-          </Column>
-          <Column>
-            <Label htmlFor="warrantyMonths">Warranty Duration (Months)</Label>
-            <Input
-              type="number"
-              id="warrantyMonths"
-              placeholder="Enter warranty duration in months"
-              {...register('warrantyMonths', {
-                required: 'Warranty duration in months is required',
-                min: { value: 0, message: 'Duration must be positive' },
-              })}
-            />
-            {errors.warrantyMonths && <ErrorMessage>{errors.warrantyMonths.message}</ErrorMessage>}
-          </Column>
-          <Column>
-            <Label htmlFor="warrantyYears">Warranty Duration (Years)</Label>
-            <Input
-              type="number"
-              id="warrantyYears"
-              placeholder="Enter warranty duration in years"
-              {...register('warrantyYears', {
-                required: 'Warranty duration in years is required',
-                min: { value: 0, message: 'Duration must be positive' },
-              })}
-            />
-            {errors.warrantyYears && <ErrorMessage>{errors.warrantyYears.message}</ErrorMessage>}
-          </Column>
-        </Row>
-        <Row>
-          <Column>
-            <Label htmlFor="isoCertified">ISO Certified</Label>
-            <Controller
-              name="isoCertified"
-              control={control}
-              defaultValue={null}
-              rules={{ required: 'ISO Certification selection is required' }}
-              render={({ field }) => (
-                <Select
-                  id="isoCertified"
-                  options={[
-                    { value: 'true', label: 'Yes' },
-                    { value: 'false', label: 'No' },
-                  ]}
-                  value={field.value ? { value: field.value, label: field.value === 'true' ? 'Yes' : 'No' } : null}
-                  onChange={(selected) => field.onChange(selected ? selected.value : null)}
-                  placeholder="Select ISO Certification"
-                  isClearable
+            </Row>
+            <Row>
+              <Column>
+                <Controller
+                  name="isoCertified"
+                  control={control}
+                  defaultValue={null}
+                  rules={{ required: 'ISO Certification selection is required' }}
+                  render={({ field }) => (
+                    <Select
+                      {...field}
+                      options={[
+                        { value: 'true', label: 'Yes' },
+                        { value: 'false', label: 'No' },
+                      ]}
+                      placeholder="ISO Certified *"
+                      isClearable
+                      components={{ Option, SingleValue }}
+                      aria-label="ISO Certified"
+                    />
+                  )}
                 />
-              )}
-            />
-            {errors.isoCertified && <ErrorMessage>{errors.isoCertified.message}</ErrorMessage>}
-          </Column>
-        </Row>
-      </Section>
+                {errors.isoCertified && <ErrorMessage>{errors.isoCertified.message}</ErrorMessage>}
+              </Column>
+            </Row>
+          </Box>
+        </LeftSection>
 
-      {/* Buttons */}
-      <ButtonContainer>
-        <ClearButton
-          type="button"
-          onClick={() => {
-            reset();
-            setUploadedImages([]);
-            setSelectedCategory(null);
-            setSelectedSubCategory(null);
-            setSelectedType(null);
-            setSelectedSubType(null);
-          }}
-        >
-          Clear All
-        </ClearButton>
-        <SubmitButton type="submit" disabled={isSubmitting}>
-          {isSubmitting ? 'Adding Product...' : 'Add Product'}
-        </SubmitButton>
-      </ButtonContainer>
-    </FormContainer>
+        {/* Right Section (60%) */}
+        <RightSection>
+          {/* Section 1: Product Details */}
+          <Box>
+            <SectionSubtitle>Product Details</SectionSubtitle>
+            <Row>
+              <Column>
+                <Input
+                  type="text"
+                  id="productName"
+                  placeholder="Product Name *"
+                  {...register('productName', { required: 'Product Name is required' })}
+                  aria-label="Product Name"
+                />
+                {errors.productName && <ErrorMessage>{errors.productName.message}</ErrorMessage>}
+              </Column>
+              <Column>
+                <Input
+                  type="number"
+                  step="0.01"
+                  id="price"
+                  placeholder="Price ($) *"
+                  {...register('price', {
+                    required: 'Price is required',
+                    min: { value: 0, message: 'Price must be positive' },
+                  })}
+                  aria-label="Price"
+                />
+                {errors.price && <ErrorMessage>{errors.price.message}</ErrorMessage>}
+              </Column>
+            </Row>
+
+            <Row>
+              <Column>
+                <Input
+                  type="number"
+                  id="stockQuantity"
+                  placeholder="Stock Quantity *"
+                  {...register('stockQuantity', {
+                    required: 'Stock Quantity is required',
+                    min: { value: 0, message: 'Stock Quantity cannot be negative' },
+                  })}
+                  aria-label="Stock Quantity"
+                />
+                {errors.stockQuantity && <ErrorMessage>{errors.stockQuantity.message}</ErrorMessage>}
+              </Column>
+              <Column>
+                <Input
+                  type="text"
+                  id="about"
+                  placeholder="About *"
+                  {...register('about', { required: 'About section is required' })}
+                  aria-label="About"
+                />
+                {errors.about && <ErrorMessage>{errors.about.message}</ErrorMessage>}
+              </Column>
+            </Row>
+
+            {/* Category Selection Dropdowns */}
+            <Row>
+              <Column>
+                <Controller
+                  name="category"
+                  control={control}
+                  defaultValue={null}
+                  rules={{ required: 'Category selection is required' }}
+                  render={({ field }) => (
+                    <Select
+                      {...field}
+                      options={categories}
+                      components={{ Option, SingleValue }}
+                      placeholder="Category *"
+                      isClearable
+                      onChange={(option) => {
+                        field.onChange(option);
+                        handleCategoryChange(option);
+                      }}
+                      aria-label="Category"
+                    />
+                  )}
+                />
+                {errors.category && <ErrorMessage>{errors.category.message}</ErrorMessage>}
+              </Column>
+              <Column>
+                <Controller
+                  name="subCategory"
+                  control={control}
+                  defaultValue={null}
+                  rules={{ required: 'Subcategory selection is required' }}
+                  render={({ field }) => (
+                    <Select
+                      {...field}
+                      options={subCategories}
+                      components={{ Option, SingleValue }}
+                      placeholder="Subcategory *"
+                      isClearable
+                      onChange={(option) => {
+                        field.onChange(option);
+                        handleSubCategoryChange(option);
+                      }}
+                      isDisabled={!selectedCategory}
+                      aria-label="Subcategory"
+                    />
+                  )}
+                />
+                {errors.subCategory && <ErrorMessage>{errors.subCategory.message}</ErrorMessage>}
+              </Column>
+            </Row>
+
+            <Row>
+              <Column>
+                <Controller
+                  name="type"
+                  control={control}
+                  defaultValue={null}
+                  rules={{ required: 'Type selection is required' }}
+                  render={({ field }) => (
+                    <Select
+                      {...field}
+                      options={types}
+                      components={{ Option, SingleValue }}
+                      placeholder="Type *"
+                      isClearable
+                      onChange={(option) => {
+                        field.onChange(option);
+                        handleTypeChange(option);
+                      }}
+                      isDisabled={!selectedSubCategory}
+                      aria-label="Type"
+                    />
+                  )}
+                />
+                {errors.type && <ErrorMessage>{errors.type.message}</ErrorMessage>}
+              </Column>
+              <Column>
+                <Controller
+                  name="subType"
+                  control={control}
+                  defaultValue={null}
+                  rules={{ required: 'Subtype selection is required' }}
+                  render={({ field }) => (
+                    <Select
+                      {...field}
+                      options={subTypes}
+                      components={{ Option, SingleValue }}
+                      placeholder="Subtype *"
+                      isClearable
+                      onChange={(option) => {
+                        field.onChange(option);
+                        handleSubTypeChange(option);
+                      }}
+                      isDisabled={!selectedType}
+                      aria-label="Subtype"
+                    />
+                  )}
+                />
+                {errors.subType && <ErrorMessage>{errors.subType.message}</ErrorMessage>}
+              </Column>
+            </Row>
+          </Box>
+
+          {/* Section 2: Technical Details */}
+          <Box>
+            <SectionSubtitle>Technical Details</SectionSubtitle>
+            <Row>
+              <Column>
+                <Input
+                  type="text"
+                  id="brandName"
+                  placeholder="Brand Name *"
+                  {...register('brandName', { required: 'Brand Name is required' })}
+                  aria-label="Brand Name"
+                />
+                {errors.brandName && <ErrorMessage>{errors.brandName.message}</ErrorMessage>}
+              </Column>
+              <Column>
+                <Input
+                  type="text"
+                  id="color"
+                  placeholder="Color *"
+                  {...register('color', { required: 'Color is required' })}
+                  aria-label="Color"
+                />
+                {errors.color && <ErrorMessage>{errors.color.message}</ErrorMessage>}
+              </Column>
+            </Row>
+
+            <Row>
+              <Column>
+                <Input
+                  type="text"
+                  id="material"
+                  placeholder="Material *"
+                  {...register('material', { required: 'Material is required' })}
+                  aria-label="Material"
+                />
+                {errors.material && <ErrorMessage>{errors.material.message}</ErrorMessage>}
+              </Column>
+              <Column>
+                <Input
+                  type="number"
+                  step="0.1"
+                  id="weight"
+                  placeholder="Weight (kg) *"
+                  {...register('weight', {
+                    required: 'Weight is required',
+                    min: { value: 0, message: 'Weight must be positive' },
+                  })}
+                  aria-label="Weight"
+                />
+                {errors.weight && <ErrorMessage>{errors.weight.message}</ErrorMessage>}
+              </Column>
+            </Row>
+
+            <Row>
+              <Column>
+                <Input
+                  type="number"
+                  step="0.1"
+                  id="width"
+                  placeholder="Width (cm) *"
+                  {...register('width', {
+                    required: 'Width is required',
+                    min: { value: 0, message: 'Width must be positive' },
+                  })}
+                  aria-label="Width"
+                />
+                {errors.width && <ErrorMessage>{errors.width.message}</ErrorMessage>}
+              </Column>
+              <Column>
+                <Input
+                  type="number"
+                  step="0.1"
+                  id="height"
+                  placeholder="Height (cm) *"
+                  {...register('height', {
+                    required: 'Height is required',
+                    min: { value: 0, message: 'Height must be positive' },
+                  })}
+                  aria-label="Height"
+                />
+                {errors.height && <ErrorMessage>{errors.height.message}</ErrorMessage>}
+              </Column>
+              <Column>
+                <Input
+                  type="number"
+                  step="0.1"
+                  id="depth"
+                  placeholder="Depth (cm) *"
+                  {...register('depth', {
+                    required: 'Depth is required',
+                    min: { value: 0, message: 'Depth must be positive' },
+                  })}
+                  aria-label="Depth"
+                />
+                {errors.depth && <ErrorMessage>{errors.depth.message}</ErrorMessage>}
+              </Column>
+            </Row>
+
+            <Row>
+              <Column>
+                <Input
+                  type="number"
+                  step="0.1"
+                  id="baseWidth"
+                  placeholder="Base Width (cm) *"
+                  {...register('baseWidth', {
+                    required: 'Base Width is required',
+                    min: { value: 0, message: 'Base Width must be positive' },
+                  })}
+                  aria-label="Base Width"
+                />
+                {errors.baseWidth && <ErrorMessage>{errors.baseWidth.message}</ErrorMessage>}
+              </Column>
+              <Column>
+                <Input
+                  type="text"
+                  id="style"
+                  placeholder="Style *"
+                  {...register('style', { required: 'Style is required' })}
+                  aria-label="Style"
+                />
+                {errors.style && <ErrorMessage>{errors.style.message}</ErrorMessage>}
+              </Column>
+            </Row>
+
+            <Row>
+              <Column>
+                <Input
+                  type="text"
+                  id="installationType"
+                  placeholder="Installation Type *"
+                  {...register('installationType', { required: 'Installation Type is required' })}
+                  aria-label="Installation Type"
+                />
+                {errors.installationType && <ErrorMessage>{errors.installationType.message}</ErrorMessage>}
+              </Column>
+              <Column>
+                <Input
+                  type="text"
+                  id="finishType"
+                  placeholder="Finish Type *"
+                  {...register('finishType', { required: 'Finish Type is required' })}
+                  aria-label="Finish Type"
+                />
+                {errors.finishType && <ErrorMessage>{errors.finishType.message}</ErrorMessage>}
+              </Column>
+            </Row>
+
+            <Row>
+              <Column>
+                <Input
+                  type="text"
+                  id="drainType"
+                  placeholder="Drain Type *"
+                  {...register('drainType', { required: 'Drain Type is required' })}
+                  aria-label="Drain Type"
+                />
+                {errors.drainType && <ErrorMessage>{errors.drainType.message}</ErrorMessage>}
+              </Column>
+              <Column>
+                <Input
+                  type="text"
+                  id="seatMaterial"
+                  placeholder="Seat Material *"
+                  {...register('seatMaterial', { required: 'Seat Material is required' })}
+                  aria-label="Seat Material"
+                />
+                {errors.seatMaterial && <ErrorMessage>{errors.seatMaterial.message}</ErrorMessage>}
+              </Column>
+            </Row>
+
+            <Row>
+              <Column>
+                <Input
+                  type="text"
+                  id="shape"
+                  placeholder="Shape *"
+                  {...register('shape', { required: 'Shape is required' })}
+                  aria-label="Shape"
+                />
+                {errors.shape && <ErrorMessage>{errors.shape.message}</ErrorMessage>}
+              </Column>
+              <Column>
+                <Input
+                  type="text"
+                  id="specialFeatures"
+                  placeholder="Special Features *"
+                  {...register('specialFeatures', { required: 'Special Features are required' })}
+                  aria-label="Special Features"
+                />
+                {errors.specialFeatures && <ErrorMessage>{errors.specialFeatures.message}</ErrorMessage>}
+              </Column>
+            </Row>
+
+            <Row>
+              <Column>
+                <Input
+                  type="text"
+                  id="productModelNumber"
+                  placeholder="Product Model Number *"
+                  {...register('productModelNumber', { required: 'Product Model Number is required' })}
+                  aria-label="Product Model Number"
+                />
+                {errors.productModelNumber && (
+                  <ErrorMessage>{errors.productModelNumber.message}</ErrorMessage>
+                )}
+              </Column>
+              <Column>
+                <Input
+                  type="text"
+                  id="asinNumber"
+                  placeholder="ASIN Number *"
+                  {...register('asinNumber', { required: 'ASIN Number is required' })}
+                  aria-label="ASIN Number"
+                />
+                {errors.asinNumber && <ErrorMessage>{errors.asinNumber.message}</ErrorMessage>}
+              </Column>
+            </Row>
+
+            <Row>
+              <Column>
+                <Input
+                  type="text"
+                  id="productCareInstructions"
+                  placeholder="Product Care Instructions *"
+                  {...register('productCareInstructions', { required: 'Care Instructions are required' })}
+                  aria-label="Product Care Instructions"
+                />
+                {errors.productCareInstructions && (
+                  <ErrorMessage>{errors.productCareInstructions.message}</ErrorMessage>
+                )}
+              </Column>
+            </Row>
+          </Box>
+        </RightSection>
+      </BodyContainer>
+
+      {/* Footer Buttons */}
+      <Footer>
+        <ButtonContainer>
+          <ClearButton
+            type="button"
+            onClick={() => {
+              reset();
+              setUploadedImages([]);
+              setSelectedCategory(null);
+              setSelectedSubCategory(null);
+              setSelectedType(null);
+              setSelectedSubType(null);
+            }}
+          >
+            Clear All
+          </ClearButton>
+          <SubmitButton type="submit" disabled={isSubmitting} onClick={handleSubmit(onSubmit)}>
+            {isSubmitting ? 'Adding Product...' : 'Add Product'}
+          </SubmitButton>
+        </ButtonContainer>
+      </Footer>
+    </MainContainer>
   );
 };
 
 // Styled Components
 
-const FormContainer = styled.form`
-  background-color: #fff;
-  padding: 30px;
+// Main Container with background color
+const MainContainer = styled.div`
+  background-color: #f5f7fa;
+  min-height: 100vh;
+  padding: 20px;
+  box-sizing: border-box;
+`;
+
+// Header Styles
+const Header = styled.header`
+  background-color: #ffffff;
+  padding: 20px 40px;
+  margin: 20px;
+  margin-left: 60px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+`;
+
+// Header Left Section
+const HeaderLeft = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 20px;
+`;
+
+// Logo Styles
+const Logo = styled.img`
+  height: 30px;
   border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+`;
+
+// Search Box Styles
+const SearchBox = styled.div`
   display: flex;
-  flex-direction: column;
-  gap: 30px;
-  max-width: 1200px;
-  margin: 0 auto;
+  align-items: center;
+  background-color: #f1f3f5;
+  padding: 8px 12px;
+  border-radius: 8px;
+  width: 300px;
+
+  svg {
+    margin-right: 8px;
+    color: #888;
+  }
 `;
 
-const Section = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
+// Search Input Styles
+const SearchInput = styled.input`
+  border: none;
+  background: none;
+  width: 100%;
+  outline: none;
+  font-size: 16px;
 `;
 
-const SectionTitle = styled.h2`
-  font-size: 32px;
-  font-weight: 700;
-  color: #333;
-  margin-bottom: 20px;
-  text-align: center;
-`;
-
-const SectionSubtitle = styled.h3`
-  font-size: 24px;
-  font-weight: 600;
+// Date Display Styles
+const DateDisplay = styled.div`
+  font-size: 16px;
   color: #555;
 `;
 
+// Header Right Section
+const HeaderRight = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+// Profile Container Styles
+const ProfileContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+`;
+
+// Profile Image Styles
+const ProfileImage = styled.img`
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+`;
+
+// User Name Styles
+const UserName = styled.span`
+  font-size: 16px;
+  color: #333;
+  font-weight: 500;
+`;
+
+// Body Styles
+const BodyContainer = styled.div`
+  display: flex;
+  gap: 40px;
+  padding: 20px 40px;
+  box-sizing: border-box;
+  margin: 20px;
+`;
+
+// Left Section (40%)
+const LeftSection = styled.div`
+  flex: 0 0 40%;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+`;
+
+// Right Section (60%)
+const RightSection = styled.div`
+  flex: 0 0 60%;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+`;
+
+// Box Styles for Sections
+const Box = styled.div`
+  background-color: #ffffff;
+  padding: 20px 25px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+`;
+
+// Section Subtitle
+const SectionSubtitle = styled.h3`
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 15px;
+  text-align: start;
+`;
+
+// Form Elements
 const Row = styled.div`
   display: flex;
   gap: 20px;
@@ -848,74 +1025,97 @@ const Row = styled.div`
 
 const Column = styled.div`
   flex: 1;
-  min-width: 250px;
+  min-width: 200px;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
 `;
 
+// Label Styles (Removed as labels are now placeholders)
+
+// Input Styles
+const Input = styled.input`
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  box-sizing: border-box;
+  font-size: 16px;
+
+  &:focus {
+    outline: none;
+    border-color: #ff7a00;
+  }
+`;
+
+// TextArea Styles
+const TextArea = styled.input` /* Changed from textarea to input for consistency */
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  resize: vertical;
+  min-height: 80px;
+  font-size: 16px;
+
+  &:focus {
+    outline: none;
+    border-color: #ff7a00;
+  }
+`;
+
+// Error Message Styles
+const ErrorMessage = styled.span`
+  color: red;
+  font-size: 13px;
+  margin-top: 4px;
+`;
+
+// Image Upload Styles
+const ImageUploadContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+`;
+
+// Loader Styles
+const Loader = styled.div`
+  font-size: 14px;
+  color: #ff7a00;
+`;
+
+// Image Preview Styles
 const ImagePreviewContainer = styled.div`
   display: flex;
-  gap: 15px;
+  gap: 10px;
   flex-wrap: wrap;
   margin-top: 10px;
 `;
 
 const ImagePreview = styled.img`
-  width: 120px;
-  height: 120px;
+  width: 100px;
+  height: 100px;
   object-fit: cover;
-  border-radius: 8px;
-  border: 1px solid #ddd;
-`;
-
-const TextArea = styled.textarea`
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #ddd;
   border-radius: 6px;
-  resize: vertical;
-  min-height: 100px;
-
-  &:focus {
-    outline: none;
-    border-color: #ff7a00;
-  }
-`;
-
-const Label = styled.label`
-  display: block;
-  margin-bottom: 8px;
-  font-weight: 500;
-  color: #555;
-`;
-
-const Input = styled.input`
-  width: 100%;
-  padding: 12px;
   border: 1px solid #ddd;
-  border-radius: 6px;
-  box-sizing: border-box;
-
-  &:focus {
-    outline: none;
-    border-color: #ff7a00;
-  }
 `;
 
-const ErrorMessage = styled.span`
-  color: red;
-  font-size: 14px;
-  margin-top: 4px;
-  display: block;
+// Footer Styles
+const Footer = styled.footer`
+  display: flex;
+  justify-content: center;
+  padding: 20px 40px;
+  margin: 20px;
 `;
 
+// Button Container
 const ButtonContainer = styled.div`
   display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
   gap: 20px;
 `;
 
+// Clear Button Styles
 const ClearButton = styled.button`
-  padding: 14px 24px;
+  padding: 12px 24px;
   background: none;
   border: 2px solid #ff7a00;
   color: #ff7a00;
@@ -923,6 +1123,7 @@ const ClearButton = styled.button`
   cursor: pointer;
   font-weight: 600;
   transition: all 0.3s ease;
+  min-width: 150px;
 
   &:hover {
     background-color: #ff7a00;
@@ -930,8 +1131,9 @@ const ClearButton = styled.button`
   }
 `;
 
+// Submit Button Styles
 const SubmitButton = styled.button`
-  padding: 14px 24px;
+  padding: 12px 24px;
   background-color: #ff7a00;
   color: white;
   border: none;
@@ -939,6 +1141,7 @@ const SubmitButton = styled.button`
   cursor: pointer;
   font-weight: 600;
   transition: background-color 0.3s ease;
+  min-width: 150px;
 
   &:disabled {
     background-color: #ffa566;
