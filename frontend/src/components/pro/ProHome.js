@@ -35,7 +35,7 @@ const ProHome = ({ onGetStarted }) => {
         <Card>
           <img src={img11} alt="Product Sellers" />
           <CardTitle>Product Sellers</CardTitle>
-          <Button onClick={() => handleGetStarted('Product Sellers')}>Get started</Button>
+          <Button onClick={() => handleGetStarted('Product Seller')}>Get started</Button>
         </Card>
         <Card>
           <img src={img12} alt="Realtor" />
