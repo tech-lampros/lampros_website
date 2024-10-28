@@ -39,7 +39,8 @@ function App() {
           <div className="desktop-view">
             <Nav
               onHomeClick={() => handleViewChange('home')}
-              onJoinAsProClick={() => handleViewChange('proLogin')} 
+              onJoinAsProClick={() => handleViewChange('pro')} 
+              onLogin={() => handleViewChange('proLogin')}
               onDesignsClick={() => handleViewChange('designs')}
               onProductsClick={() => handleViewChange('products')}
               onProfessionalsClick={() => handleViewChange('professionals')}

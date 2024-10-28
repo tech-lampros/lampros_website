@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
 const ProLogin = ({ onBecomePartner }) => {
   const [phoneNumber, setPhoneNumber] = useState('');
@@ -37,12 +38,18 @@ const ProLogin = ({ onBecomePartner }) => {
 
   const verifyOtp = async () => {
     try {
-      await axios.post('https://lampros-backend.vercel.app/api/user/verify-otp', {
+      const response = await axios.post('https://lampros-backend.vercel.app/api/user/verify-otp', {
         phoneNumber,
         otp,
       });
-      navigate('/proDash');
-      // Assuming successful login - handle what happens next here
+  
+      const { token } = response.data; // Assuming the token is returned in the response
+      if (token) {
+        Cookies.set('authToken', token, { expires: 7, secure: true, sameSite: 'strict' }); 
+        console.log('Token stored in cookies');
+      }
+  
+      navigate('/proDash'); // Navigate to ProDash on successful login
     } catch (error) {
       console.error('Failed to verify OTP:', error);
     }

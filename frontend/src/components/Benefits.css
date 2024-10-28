@@ -1,116 +1,129 @@
+/* Container Styles */
 .benefits-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #FFFBFB;
-  padding: 20px;
-  position: relative;
+  background-color: #F5F7FA;
+  padding: 50px 15px;
+  min-height: 100vh;
 }
 
 .benefits-title {
-  font-size: 24px;
-  margin: 50px 0;
+  font-size: 28px;
+  font-weight: 600;
+  margin-bottom: 40px;
+  color: #333;
   text-align: center;
-  animation: fadeIn 2s ease-out, bounceIn 1s ease-out;
+  letter-spacing: 1px;
+  animation: fadeIn 1s ease-out;
 }
 
+/* Card Container */
 .benefit-items-container {
-  display: flex;
-  flex-wrap: wrap; /* Allow items to wrap on smaller screens */
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Responsive grid */
+  gap: 25px;
   width: 100%;
-  gap: 20px; /* Add space between items */
-  animation: fadeInUp 2s ease-out;
 }
 
+/* Card Base Style */
 .benefit-item {
-  flex: 1;
-  max-width: 300px; /* Ensure items do not grow too large */
+  position: relative;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  padding: 25px;
   text-align: center;
-  margin: 0 100px; /* Adjust margins */
-  opacity: 0;
-  transform: translateY(20px);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  animation: fadeInUp 1s ease-out forwards;
+  transition: transform 0.3s, box-shadow 0.3s ease;
+  overflow: hidden;
 }
 
+.benefit-item:hover {
+  transform: scale(1.05);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+}
 
-
+/* Icon Variations */
 .benefit-icon {
-  font-size: 2rem;
-  color: #ff8c00;
-  margin-bottom: 10px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  font-size: 2.5rem;
+  margin-bottom: 15px;
+  transition: color 0.3s, transform 0.3s;
 }
 
+.card1 .benefit-icon {
+  color: #289aab;
+}
 
+.card2 .benefit-icon {
+  color: #289aab;
+}
 
+.card3 .benefit-icon {
+  color: #289aab;
+}
+
+/* Heading & Paragraph Styles */
 h3 {
-  font-size: 1.3rem;
+  font-size: 1.4rem;
   margin-bottom: 10px;
-  transition: transform 0.3s ease;
+  font-weight: 500;
+  color: #333;
 }
-
 
 p {
   font-size: 1rem;
   color: #666;
-  transition: box-shadow 0.3s ease;
+  line-height: 1.5;
 }
 
-
-
-/* Keyframes for animations */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+/* Card Layout Variations */
+.card1 {
+  background: linear-gradient(135deg, #F5F7FF, #E3F2FD);
 }
 
-@keyframes bounceIn {
-  0% {
-    transform: scale(0.3);
-    opacity: 0;
-  }
-  50% {
-    transform: scale(1.05);
-    opacity: 1;
-  }
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
+.card2 {
+  background: linear-gradient(135deg, #F5F7FF, #E3F2FD);
 }
 
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.card3 {
+  background: linear-gradient(135deg, #F5F7FF, #E3F2FD);
+}
+
+/* Card Border Highlight */
+.benefit-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 6px;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.08);
+  transition: background-color 0.3s;
+}
+
+.card1::before {
+  background-color: #289aab;
+}
+
+.card2::before {
+  background-color: #289aab;
+}
+
+.card3::before {
+  background-color: #289aab;
+}
+
+.benefit-item:hover::before {
+  background-color: rgba(0, 0, 0, 0.1);
 }
 
 /* Responsive Styles */
-@media (min-width: 768px) {
-  .benefit-items-container {
-    justify-content: space-between; /* Distribute items evenly on larger screens */
-  }
-
-  .benefit-item {
-    flex: 1;
-    max-width: 30%; /* Ensure three items fit in a row */
-    text-align: start; /* Align text to start */
-  }
-}
-
 @media (max-width: 768px) {
-  .benefit-item {
-    max-width: 100%; /* Full width on smaller screens */
+  h3 {
+    font-size: 1.2rem;
+  }
+
+  p {
+    font-size: 0.95rem;
   }
 }

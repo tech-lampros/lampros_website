@@ -26,6 +26,17 @@
   align-items: center;
 }
 
+.Login {
+  background-color: #fefefe;
+  color: #51b7cc;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 10px;
+  display: flex;
+  margin-right: 20px;
+  align-items: center;
+}
+
 .join-pro-btn:hover {
   background-color: #ff7000;
 }

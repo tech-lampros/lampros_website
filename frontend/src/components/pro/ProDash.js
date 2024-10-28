@@ -1,12 +1,43 @@
 // Prodash.js
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import Cookies from 'js-cookie';
 import ProSidebar from './ProSidebar';
 import ProNav from './ProNav'; // Reusing ProNav component
-import { useNavigate } from 'react-router-dom';
 
 const Prodash = () => {
   const navigate = useNavigate();
+
+  // Check token and validate user with the protected route
+  useEffect(() => {
+    const verifyToken = async () => {
+      const token = Cookies.get('authToken'); // Retrieve token from cookies
+
+      if (!token) {
+        console.error('No token found. Redirecting to login...');
+        navigate('/proLogin'); // Redirect if no token is found
+        return;
+      }
+
+      try {
+        // Call the protected route with the token in the header
+        await axios.get('https://lampros-backend.vercel.app/api/user/protected-route', {
+          headers: {
+            Authorization: `Bearer ${token}`, // Attach token in the header
+          },
+        });
+        console.log('User is authorized.');
+      } catch (error) {
+        console.error('Failed to authenticate. Redirecting to login...', error);
+        Cookies.remove('authToken'); // Clear token if authentication fails
+        navigate('/proLogin'); // Redirect to login
+      }
+    };
+
+    verifyToken();
+  }, [navigate]);
 
   return (
     <DashboardContainer>
@@ -41,6 +72,7 @@ const Prodash = () => {
 
 export default Prodash;
 
+// Styled components
 const DashboardContainer = styled.div`
   display: flex;
   height: 100vh;
@@ -80,7 +112,8 @@ const BarChart = styled.div`
 const Bar = styled.div`
   width: 20%;
   height: ${({ 'data-height': height }) => height};
-  background-color: #007bff;
+  background-color: #
+  007bff;
   color: #fff;
   text-align: center;
   line-height: 2;
@@ -105,6 +138,8 @@ const ActionButton = styled.button`
   border-radius: 10px;
   cursor: pointer;
   font-size: 16px;
+  transition: background-color 0.3s;
+
   &:hover {
     background-color: #ff6500;
   }

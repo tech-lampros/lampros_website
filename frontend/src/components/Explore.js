@@ -1,91 +1,70 @@
-import React from 'react';
-import './Explore.css'; // Import the CSS file for styling
+import React, { useState } from 'react';
+import './Explore.css';
 import img1 from '../assets/expo1.png';
 import img2 from '../assets/expo2.png';
 import img3 from '../assets/expo3.png';
 import img4 from '../assets/expo4.png';
 
 const Explore = ({ onDesignsClick, onProductsClick, onProfessionalsClick }) => {
+  const [showMore, setShowMore] = useState([false, false, false, false]);
+
+  const handleReadMore = (index) => {
+    const updatedShowMore = [...showMore];
+    updatedShowMore[index] = !updatedShowMore[index];
+    setShowMore(updatedShowMore);
+  };
+
+  const items = [
+    {
+      img: img1,
+      title: 'Explore Designs',
+      text: 'Discover stylish designs for kitchens, bedrooms, and more. Perfect solutions for every taste.',
+      onClick: () => onDesignsClick('image'),
+    },
+    {
+      img: img2,
+      title: 'Find Professionals',
+      text: 'Connect with experts to bring your vision to life with exceptional service and quality.',
+      onClick: () => onProfessionalsClick('image'),
+    },
+    {
+      img: img3,
+      title: 'Find Products & Materials',
+      text: 'Explore a variety of materials and products for your construction and renovation needs.',
+      onClick: () => onProductsClick('image'),
+    },
+    {
+      img: img4,
+      title: 'Properties & Lands',
+      text: 'Browse properties and lands available for sale or lease and find your ideal investment.',
+      onClick: () => console.log('Properties & Lands clicked'),
+    },
+  ];
+
   return (
     <div className="explore-container">
       <h2 className="explore-title">Explore Lampros</h2>
       <div className="explore-grid">
-        <div className="explore-item">
-          <img 
-            src={img1} 
-            alt="Explore Designs" 
-            className="explore-image" 
-            onClick={() => onDesignsClick('image')}
-          />
-          <div className="explore-text-container">
-            <h3 
-              className="explore-subtitle" 
-              onClick={() => onDesignsClick('text')}
-            >
-              Explore Designs
-            </h3>
-            <p className="explore-text">
-              Thousands of unique and stylish designs for kitchen, bedroom, dining areas, and much more are available to suit every taste and need.
-            </p>
+        {items.map((item, index) => (
+          <div className="explore-item" key={index} onClick={item.onClick}>
+            <img src={item.img} alt={item.title} className="explore-image" />
+            <div className="explore-text-container">
+              <h3 className="explore-subtitle">{item.title}</h3>
+              <p className={`explore-text ${showMore[index] ? 'show-more' : ''}`}>
+                {item.text}
+              </p>
+              <button
+                className="read-more-btn"
+                onClick={(e) => {
+                  e.stopPropagation(); // Prevent item click
+                  handleReadMore(index);
+                }}
+              >
+                {showMore[index] ? 'Read Less' : 'Read More'}
+              </button>
+            </div>
           </div>
-        </div>
-        <div className="explore-item">
-          <img 
-            src={img2} 
-            alt="Find Professionals" 
-            className="explore-image" 
-            onClick={() => onProfessionalsClick('image')}
-          />
-          <div className="explore-text-container">
-            <h3 
-              className="explore-subtitle" 
-              onClick={() => onProfessionalsClick('text')}
-            >
-              Find Professionals
-            </h3>
-            <p className="explore-text">
-              Connect with skilled professionals to bring your dream spaces to life with expert advice and quality service.
-            </p>
-          </div>
-        </div>
-        <div className="explore-item">
-          <img 
-            src={img3} 
-            alt="Find Products & Materials" 
-            className="explore-image" 
-            onClick={() => onProductsClick('image')}
-          />
-          <div className="explore-text-container">
-            <h3 
-              className="explore-subtitle" 
-              onClick={() => onProductsClick('text')}
-            >
-              Find Products & Materials
-            </h3>
-            <p className="explore-text">
-              Discover a wide range of products and materials to suit your renovation and construction needs.
-            </p>
-          </div>
-        </div>
-        <div className="explore-item">
-          <img 
-            src={img4} 
-            alt="Properties & Lands" 
-            className="explore-image" 
-            onClick={() => console.log('Properties & Lands image clicked')}
-          />
-          <div className="explore-text-container">
-            <h3 
-              className="explore-subtitle" 
-              onClick={() => console.log('Properties & Lands text clicked')}
-            >
-              Properties & Lands
-            </h3>
-            <p className="explore-text">
-              Browse through our listings of properties and lands available for purchase or lease.
-            </p>
-          </div>
-        </div>
+        ))}
       </div>
     </div>
   );

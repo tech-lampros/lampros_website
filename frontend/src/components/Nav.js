@@ -5,7 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './Nav.css'; // Ensure this CSS file reflects the dark theme
 import logo from '../assets/logo.png';
 
-const NavigationBar = ({ onHomeClick, onJoinAsProClick, onDesignsClick, onProductsClick, onProfessionalsClick }) => {
+const NavigationBar = ({ onHomeClick, onJoinAsProClick, onDesignsClick,onLogin, onProductsClick, onProfessionalsClick }) => {
   const [searchVisible, setSearchVisible] = useState(false);
 
   const toggleSearch = () => {
@@ -69,7 +69,11 @@ const NavigationBar = ({ onHomeClick, onJoinAsProClick, onDesignsClick, onProduc
             <NavDropdown.Item>Villas</NavDropdown.Item>
             <NavDropdown.Item>Land</NavDropdown.Item>
           </NavDropdown>
-          
+          <Form inline className="join-pro-form">
+            <Button className="Login" onClick={onLogin}>
+              Login <FaUserPlus className="join-pro-icon" />
+            </Button>
+          </Form>
           <Form inline className="join-pro-form">
             <Button className="join-pro-btn" onClick={onJoinAsProClick}>
               Become a partner <FaUserPlus className="join-pro-icon" />
