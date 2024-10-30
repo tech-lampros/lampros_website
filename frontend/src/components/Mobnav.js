@@ -24,9 +24,9 @@ function OffcanvasExample({ onHomeClick, onJoinAsProClick, onDesignsClick, onPro
       <Navbar.Brand href="#home" className="custom-brand d-flex align-items-center">
       <img
         src={logo}
-        width="120"
+        width="80"
         height="auto"
-        className="d-inline-block align-top"
+        className="d-inline-block align-top ll"
         alt="Logo"
         onClick={onHomeClick}
       />

@@ -1,4 +1,3 @@
-// Land_Carousel.js
 import React, { useState } from 'react';
 import { Carousel } from 'react-responsive-carousel';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
@@ -17,44 +16,44 @@ const LandCarousel = () => {
     setShowConsultationForm(false);
   };
 
+  const isMobile = window.innerWidth <= 768; // Detect if mobile
+
   return (
-    <div>
-      {/* Carousel Section */}
+    <div className="carousel-wrapper">
       <Carousel
         showThumbs={false}
-        infiniteLoop={true}
-        autoPlay={true}
-        interval={2000}
+        infiniteLoop
+        autoPlay
+        interval={5000}
         showStatus={false}
         showArrows={true}
-        useKeyboardArrows={true}
+        useKeyboardArrows
+
       >
         {data.map((item, index) => (
           <div key={index} className="carousel-slide">
+            <div className="carousel-image">
+              <img src={item.imageUrl} alt={`Slide ${index}`} />
+            </div>
             <div className="carousel-content">
               <h2>{item.title}</h2>
-              <h2 className="highlighted-text">{item.highlightedText}</h2>
-              <p>{item.subText}</p>
+              <p>{isMobile ? item.shortText : item.subText}</p> {/* Short text on mobile */}
               <button 
                 onClick={handleConsultationClick} 
                 className="consultation-button"
               >
-                Get Free Consultation
+                Explore now
               </button>
-            </div>
-            <div className="carousel-image">
-              <img src={item.imageUrl} alt={`Slide ${index}`} />
             </div>
           </div>
         ))}
       </Carousel>
 
-      {/* Consultation Form Modal (Conditional Rendering) */}
       {showConsultationForm && (
         <div className="modal-backdrop" onClick={closeConsultationForm}>
           <div 
             className="modal-content" 
-            onClick={(e) => e.stopPropagation()} // Prevents closing modal when clicking inside the form
+            onClick={(e) => e.stopPropagation()}
           >
             <ConsultationForm closeForm={closeConsultationForm} />
           </div>
@@ -63,7 +62,5 @@ const LandCarousel = () => {
     </div>
   );
 };
-
-
 
 export default LandCarousel;

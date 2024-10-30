@@ -18,6 +18,7 @@ import ProLogin from './components/pro/ProLogin';
 import Prodash from './components/pro/ProDash'; // Import ProDash component
 import AddProduct from './components/pro/AddProduct'; // Import AddProduct component
 import PrivacyPolicy from './components/Privacy';
+import Calc from './components/Calc';
 
 function App() {
   const [view, setView] = useState('home');
@@ -65,6 +66,7 @@ function App() {
                 onProductsClick={() => handleViewChange('products')}
                 onProfessionalsClick={() => handleViewChange('professionals')}
               />
+              <Calc />
               <Benefits />
               <AppDownload />
             </>

@@ -4,6 +4,10 @@
   padding: 10px 20px;
 }
 
+.ll {
+  width: 100px !important;
+}
+
 .custom-brand img {
   margin-right: 10px;
   max-width: 200px;
