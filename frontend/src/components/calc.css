@@ -4,7 +4,7 @@
 .calc-container {
   width: 100%;
   max-width: 900px;
-  margin: 0 auto;
+  margin: 50px auto;
   padding: 40px;
   background: linear-gradient(135deg, #f0f4f8, #ffffff);
   border-radius: 16px;

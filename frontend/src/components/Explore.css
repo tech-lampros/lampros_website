@@ -47,6 +47,8 @@
   font-family: 'Raleway', sans-serif;
   font-weight: 400;
   font-size: 14px;
+  align-items: start;
+  text-align: start;
   color: #666;
   line-height: 1.6;
 }
