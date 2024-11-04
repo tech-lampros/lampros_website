@@ -1,7 +1,0 @@
-{
-  "dependencies": {
-    "install": "^0.13.0",
-    "js-cookie": "^3.0.5",
-    "npm": "^10.9.0"
-  }
-}
