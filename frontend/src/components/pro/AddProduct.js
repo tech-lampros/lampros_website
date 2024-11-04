@@ -11,6 +11,10 @@ import { format } from 'date-fns';
 import logo from '../../assets/logo.png';
 import ProNav from './ProNav';
 import ProSidebar from './ProSidebar';
+import Cookies from 'js-cookie';
+
+
+
 
 // Custom Option Component with Image
 const Option = (props) => (
@@ -44,6 +48,41 @@ const AddProductForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [uploadedImages, setUploadedImages] = useState([]);
   const [isUploading, setIsUploading] = useState(false);
+  const [user, setUser] = useState({ fname: '', lname: '', profileImage: '' });
+  const [brnads, setBrands] = useState([]);
+
+  // Fetch user info from API
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      try {
+         const token = Cookies.get('authToken');
+         const response = await axios.get('https://lampros-backend.vercel.app/api/user/protected-route', {
+            headers: {
+               Authorization: `Bearer ${token}`,
+            },
+         });
+         const { fname, lname, phoneNumber } = response.data;
+   
+         const brandresponse = await axios.get('https://lampros-backend.vercel.app/api/brand/brands', {
+            headers: {
+               Authorization: `Bearer ${token}`,
+            },
+         });
+         const formattedBrands = brandresponse.data.map(brand => ({
+            value: brand._id,
+            label: brand.name,
+            image: brand.imageUrl,
+         }));
+         setBrands(formattedBrands); // Update brands with formatted data
+         setUser({ fname, lname, phoneNumber });
+      } catch (error) {
+         console.error('Error fetching user info:', error);
+      }
+   };
+   
+
+    fetchUserInfo();
+  }, []);
   const {
     register,
     handleSubmit,
@@ -192,8 +231,8 @@ const AddProductForm = () => {
     try {
       const productData = {
         seller: {
-          name: data.sellerName,
-          phoneNumber: data.phoneNumber,
+          name: user.fname,
+          phoneNumber: user.phoneNumber,
         },
         name: data.productName,
         category: selectedCategory ? selectedCategory.value : '',
@@ -202,9 +241,9 @@ const AddProductForm = () => {
         type: selectedType ? selectedType.value : '',
         price: parseFloat(data.price),
         quantity: parseInt(data.stockQuantity, 10),
+        brandId: data.brand.value,
         about: data.about,
         technicalDetails: {
-          brand: data.brandName,
           color: data.color,
           material: data.material,
           productDimensions: {
@@ -241,10 +280,15 @@ const AddProductForm = () => {
         },
         images: uploadedImages,
       };
-
+      const token = Cookies.get('authToken');
       await axios.post(
         'https://lampros-backend.vercel.app/api/products/products',
-        productData
+        productData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // Attach token in the header
+          },
+        }
       );
 
       // Reset Form and States
@@ -387,7 +431,7 @@ const AddProductForm = () => {
                 />
                 {errors.warranty && <ErrorMessage>{errors.warranty.message}</ErrorMessage>}
               </Column>
-              {watchWarranty === 'true' && (
+              {watchWarranty?.value === 'true' && (
                 <>
                   <Column>
                     <Input
@@ -615,14 +659,23 @@ const AddProductForm = () => {
             <SectionSubtitle>Technical Details</SectionSubtitle>
             <Row>
               <Column>
-                <Input
-                  type="text"
-                  id="brandName"
-                  placeholder="Brand Name *"
-                  {...register('brandName', { required: 'Brand Name is required' })}
-                  aria-label="Brand Name"
-                />
-                {errors.brandName && <ErrorMessage>{errors.brandName.message}</ErrorMessage>}
+              <Controller
+      name="brand"
+      control={control}
+      defaultValue={null}
+      rules={{ required: 'Brand selection is required' }}
+      render={({ field }) => (
+         <Select
+            {...field}
+            options={brnads}
+            placeholder="Select a Brand"
+            components={{ Option, SingleValue }}
+            isClearable
+            aria-label="Brand"
+         />
+      )}
+   />
+   {errors.brand && <ErrorMessage>{errors.brand.message}</ErrorMessage>}
               </Column>
               <Column>
                 <Input

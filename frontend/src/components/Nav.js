@@ -4,8 +4,10 @@ import { FaSearch, FaUserPlus } from 'react-icons/fa';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './Nav.css'; // Ensure this CSS file reflects the dark theme
 import logo from '../assets/logo.png';
+import Cookies from 'js-cookie';
 
 const NavigationBar = ({ onHomeClick, onJoinAsProClick, onDesignsClick,onLogin, onProductsClick, onProfessionalsClick }) => {
+  const token = Cookies.get('authToken');
   const [searchVisible, setSearchVisible] = useState(false);
 
   const toggleSearch = () => {
@@ -71,7 +73,7 @@ const NavigationBar = ({ onHomeClick, onJoinAsProClick, onDesignsClick,onLogin, 
           </NavDropdown>
           <Form inline className="join-pro-form">
             <Button className="Login" onClick={onLogin}>
-              Login <FaUserPlus className="join-pro-icon" />
+              {token ? 'Dashboard' : 'Login'} <FaUserPlus className="join-pro-icon" />
             </Button>
           </Form>
           <Form inline className="join-pro-form">
