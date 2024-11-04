@@ -37,7 +37,7 @@ function App() {
   return (
     <div className="App">
       {/* Only show the navigation, content, and footer if NOT on the ProDash or AddProduct routes */}
-      {!isProDash && !isAddProduct && !isPrivacy && !isTearms (
+      {!isProDash && !isAddProduct && !isPrivacy && !isTearms && (
         <>
           <div className="desktop-view">
             <Nav
