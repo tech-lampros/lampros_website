@@ -18,6 +18,7 @@ import ProLogin from './components/pro/ProLogin';
 import Prodash from './components/pro/ProDash'; // Import ProDash component
 import AddProduct from './components/pro/AddProduct'; // Import AddProduct component
 import PrivacyPolicy from './components/Privacy';
+import Tearms from './components/Tearms.js'
 import Calc from './components/Calc';
 
 function App() {
@@ -31,11 +32,12 @@ function App() {
   const isProDash = location.pathname === '/proDash'; // Check if the current route is "/proDash"
   const isAddProduct = location.pathname === '/add-product'; // Check if the current route is "/add-product"
   const isPrivacy = location.pathname === '/privacy_policy';
+  const isTearms = location.pathname === '/TermsAndConditions';
 
   return (
     <div className="App">
       {/* Only show the navigation, content, and footer if NOT on the ProDash or AddProduct routes */}
-      {!isProDash && !isAddProduct && !isPrivacy && (
+      {!isProDash && !isAddProduct && !isPrivacy && !isTearms (
         <>
           <div className="desktop-view">
             <Nav
@@ -94,6 +96,7 @@ function App() {
         <Route path="/proDash" element={<Prodash />} />
         <Route path="/add-product" element={<AddProduct />} />
         <Route path="/privacy_policy" element={<PrivacyPolicy/>} />
+        <Route path='/TermsAndConditions' element={<Tearms/>} />
       </Routes>
     </div>
   );
