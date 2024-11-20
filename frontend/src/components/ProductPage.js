@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './ProductsPage.css';
+import LazyImage from '../components/LazyImage.js';
 
 // Import images
 import foundation from '../assets/products/product-exterior_features.png';
@@ -10,59 +11,130 @@ import flooring from '../assets/products/product-flooring.png';
 import plumbing from '../assets/products/product-plumbing.png';
 import electrical from '../assets/products/products-electrical.png';
 import hvac from '../assets/products/products-hvac.png';
-import interiorFinishes from '../assets/products/products-Interior_finishes.png';
-import exteriorFeatures from '../assets/products/product-exterior_features.png';
-import miscellaneous from '../assets/products/products-miscellaneous.png';
-import smartHomeTechnology from '../assets/products/product-smart-home.png';
-import wallsCeilings from '../assets/products/product-wall_selling.png';
-import lighting from '../assets/products/product-lighting.png';
-import doorsWindows from '../assets/products/products-doors_windows.png';
-import cabinetryStorage from '../assets/products/products-storage.png';
-import sanitarywaresBathroomFittings from '../assets/products/products-bathroom_fittings.png';
-import curtainsDecor from '../assets/products/products-curtains.png';
-import landscapingOutdoorDecor from '../assets/products/products-miscellaneous.png';
-import solarSystems from '../assets/products/products-solar.png';
-import furnitureHomeDecor from '../assets/products/products-furniture.png';
-import LazyImage from './LazyImage';
-
 
 const products = [
-    { title: 'Foundation and Structure', src: foundation, alt: 'Foundation and Structure' },
-    { title: 'Framing', src: framing, alt: 'Framing' },
-    { title: 'Exterior Materials', src: exteriorMaterials, alt: 'Exterior Materials' },
-    { title: 'Interior Walls and Ceilings', src: interiorWallsCeilings, alt: 'Interior Walls and Ceilings' },
-    { title: 'Flooring', src: flooring, alt: 'Flooring' },
-    { title: 'Plumbing', src: plumbing, alt: 'Plumbing' },
-    { title: 'Electrical', src: electrical, alt: 'Electrical' },
-    { title: 'HVAC (Heating, Ventilation, and Air Conditioning)', src: hvac, alt: 'HVAC' },
-    { title: 'Interior Finishes', src: interiorFinishes, alt: 'Interior Finishes' },
-    { title: 'Exterior Features', src: exteriorFeatures, alt: 'Exterior Features' },
-    { title: 'Miscellaneous', src: miscellaneous, alt: 'Miscellaneous' },
-    { title: 'Smart Home Technology', src: smartHomeTechnology, alt: 'Smart Home Technology' },
-    { title: 'Walls and Ceilings', src: wallsCeilings, alt: 'Walls and Ceilings' },
-    { title: 'Lighting', src: lighting, alt: 'Lighting' },
-    { title: 'Doors and Windows', src: doorsWindows, alt: 'Doors and Windows' },
-    { title: 'Cabinetry and Storage', src: cabinetryStorage, alt: 'Cabinetry and Storage' },
-    { title: 'Sanitarywares and Bathroom Fittings', src: sanitarywaresBathroomFittings, alt: 'Sanitarywares and Bathroom Fittings' },
-    { title: 'Curtains and Decor', src: curtainsDecor, alt: 'Curtains and Decor' },
-    { title: 'Landscaping and Outdoor Decor', src: landscapingOutdoorDecor, alt: 'Landscaping and Outdoor Decor' },
-    { title: 'Solar & Systems', src: solarSystems, alt: 'Solar & Systems' },
-    { title: 'Furniture and Home Decor', src: furnitureHomeDecor, alt: 'Furniture and Home Decor' },
+    {
+        title: 'Foundation and Structure',
+        src: foundation,
+        alt: 'Foundation and Structure',
+        price: '₹ 10 Lacks',
+        location: 'Kozhikode, Kerala',
+    },
+    {
+        title: 'Framing',
+        src: framing,
+        alt: 'Framing',
+        price: '₹ 8 Lacks',
+        location: 'Thrissur, Kerala',
+    },
+    {
+        title: 'Exterior Materials',
+        src: exteriorMaterials,
+        alt: 'Exterior Materials',
+        price: '₹ 15 Lacks',
+        location: 'Ernakulam, Kerala',
+    },
+    {
+        title: 'Interior Walls and Ceilings',
+        src: interiorWallsCeilings,
+        alt: 'Interior Walls and Ceilings',
+        price: '₹ 12 Lacks',
+        location: 'Malappuram, Kerala',
+    },
+    {
+        title: 'Flooring',
+        src: flooring,
+        alt: 'Flooring',
+        price: '₹ 18 Lacks',
+        location: 'Trivandrum, Kerala',
+    },
+    {
+        title: 'Plumbing',
+        src: plumbing,
+        alt: 'Plumbing',
+        price: '₹ 9 Lacks',
+        location: 'Kollam, Kerala',
+    },
+    {
+        title: 'Electrical',
+        src: electrical,
+        alt: 'Electrical',
+        price: '₹ 7 Lacks',
+        location: 'Kannur, Kerala',
+    },
+    {
+        title: 'HVAC (Heating, Ventilation, and Air Conditioning)',
+        src: hvac,
+        alt: 'HVAC',
+        price: '₹ 20 Lacks',
+        location: 'Wayanad, Kerala',
+    },
 ];
 
 const ProductsPage = () => {
+    const [modalImage, setModalImage] = useState(null);
+
+    const openModal = (image) => {
+        setModalImage(image);
+    };
+
+    const closeModal = () => {
+        setModalImage(null);
+    };
+
     return (
-        <div className="products-container">
-            <h2>Products & Materials</h2>
-            <div className="products-grid">
-                {products.map((product, index) => (
-                    <div key={index} className="product-item">
-                       <LazyImage src={product.src} alt={product.alt} className="design-image" />
-                        <h3>{product.title}</h3>
-                    </div>
-                ))}
+        <>
+            <div className="products-header">
+                <div className="breadcrumb">Home › Products › Materials</div>
+                <h1>Products & Materials</h1>
+                <p className="description">
+                    Explore a wide range of premium-quality materials and products for your home. From structural components to
+                    stylish finishes, discover everything you need for a perfect home. Browse categories like flooring, plumbing,
+                    electrical, and more to find the best options for your requirements.
+                </p>
+                <div className="filters">
+                    <select className="filter-dropdown">
+                        <option>Sort By</option>
+                        <option>Popularity</option>
+                        <option>Newest First</option>
+                        <option>Price: Low to High</option>
+                        <option>Price: High to Low</option>
+                    </select>
+                    <select className="filter-dropdown">
+                        <option>Filter By</option>
+                        <option>Structural</option>
+                        <option>Finishing</option>
+                        <option>Technology</option>
+                    </select>
+                    <select className="filter-dropdown">
+                        <option>Category</option>
+                        <option>Foundation</option>
+                        <option>Interior</option>
+                        <option>Exterior</option>
+                    </select>
+                </div>
             </div>
-        </div>
+            <div className="products-container">
+                <h2>Explore Products</h2>
+                <div className="products-grid">
+                    {products.map((product, index) => (
+                        <div key={index} className="product-item" onClick={() => openModal(product.src)}>
+                            <LazyImage src={product.src} alt={product.alt} className="product-image" />
+                            <div className="product-details">
+                                <h3>{product.title}</h3>
+                                <p className="product-price">{product.price}</p>
+                                <p className="product-location">{product.location}</p>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+                {modalImage && (
+                    <div className="modal" onClick={closeModal}>
+                        <img src={modalImage} alt="Full view" className="modal-image" />
+                    </div>
+                )}
+            </div>
+        </>
     );
 };
 
