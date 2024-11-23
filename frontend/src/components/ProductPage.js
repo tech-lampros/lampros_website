@@ -1,141 +1,321 @@
-import React, { useState } from 'react';
-import './ProductsPage.css';
-import LazyImage from '../components/LazyImage.js';
+import React, { useState } from "react";
+import {
+  Box,
+  Typography,
+  Grid,
+  Card,
+  CardMedia,
+  CardContent,
+  FormControl,
+  Select,
+  MenuItem,
+} from "@mui/material";
 
-// Import images
-import foundation from '../assets/products/product-exterior_features.png';
-import framing from '../assets/products/products-framing.png';
-import exteriorMaterials from '../assets/products/products-exterior_materials.png';
-import interiorWallsCeilings from '../assets/products/product-interial.png';
-import flooring from '../assets/products/product-flooring.png';
-import plumbing from '../assets/products/product-plumbing.png';
-import electrical from '../assets/products/products-electrical.png';
-import hvac from '../assets/products/products-hvac.png';
-
-const products = [
+// Dummy Data with 20 Categories
+const data = Array.from({ length: 20 }, (_, index) => ({
+  category: `Category ${index + 1}`,
+  image: `https://via.placeholder.com/200?text=Category+${index + 1}`,
+  subcategories: [
     {
-        title: 'Foundation and Structure',
-        src: foundation,
-        alt: 'Foundation and Structure',
-        price: '₹ 10 Lacks',
-        location: 'Kozhikode, Kerala',
+      name: `Subcategory 1`,
+      image: `https://via.placeholder.com/150?text=Subcategory+1`,
+      products: [
+        {
+          title: "Product 1",
+          src: "https://via.placeholder.com/150",
+          alt: "Product 1",
+          price: `₹${(index + 1) * 1000}`,
+          location: "Kozhikode, Kerala",
+          quantity: 10,
+        },
+        {
+          title: "Product 2",
+          src: "https://via.placeholder.com/150",
+          alt: "Product 2",
+          price: `₹${(index + 1) * 2000}`,
+          location: "Thrissur, Kerala",
+          quantity: 0,
+        },
+      ],
     },
     {
-        title: 'Framing',
-        src: framing,
-        alt: 'Framing',
-        price: '₹ 8 Lacks',
-        location: 'Thrissur, Kerala',
+      name: `Subcategory 2`,
+      image: `https://via.placeholder.com/150?text=Subcategory+2`,
+      products: [
+        {
+          title: "Product 3",
+          src: "https://via.placeholder.com/150",
+          alt: "Product 3",
+          price: `₹${(index + 1) * 3000}`,
+          location: "Ernakulam, Kerala",
+          quantity: 5,
+        },
+        {
+          title: "Product 4",
+          src: "https://via.placeholder.com/150",
+          alt: "Product 4",
+          price: `₹${(index + 1) * 4000}`,
+          location: "Trivandrum, Kerala",
+          quantity: 8,
+        },
+      ],
     },
-    {
-        title: 'Exterior Materials',
-        src: exteriorMaterials,
-        alt: 'Exterior Materials',
-        price: '₹ 15 Lacks',
-        location: 'Ernakulam, Kerala',
-    },
-    {
-        title: 'Interior Walls and Ceilings',
-        src: interiorWallsCeilings,
-        alt: 'Interior Walls and Ceilings',
-        price: '₹ 12 Lacks',
-        location: 'Malappuram, Kerala',
-    },
-    {
-        title: 'Flooring',
-        src: flooring,
-        alt: 'Flooring',
-        price: '₹ 18 Lacks',
-        location: 'Trivandrum, Kerala',
-    },
-    {
-        title: 'Plumbing',
-        src: plumbing,
-        alt: 'Plumbing',
-        price: '₹ 9 Lacks',
-        location: 'Kollam, Kerala',
-    },
-    {
-        title: 'Electrical',
-        src: electrical,
-        alt: 'Electrical',
-        price: '₹ 7 Lacks',
-        location: 'Kannur, Kerala',
-    },
-    {
-        title: 'HVAC (Heating, Ventilation, and Air Conditioning)',
-        src: hvac,
-        alt: 'HVAC',
-        price: '₹ 20 Lacks',
-        location: 'Wayanad, Kerala',
-    },
-];
+  ],
+}));
 
 const ProductsPage = () => {
-    const [modalImage, setModalImage] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedSubcategory, setSelectedSubcategory] = useState("");
+  const [products, setProducts] = useState([]);
 
-    const openModal = (image) => {
-        setModalImage(image);
-    };
+  // Handle Category Change
+  const handleCategoryChange = (categoryName) => {
+    setSelectedCategory(categoryName);
+    setSelectedSubcategory(""); // Reset subcategory
+    setProducts([]); // Clear products
+  };
 
-    const closeModal = () => {
-        setModalImage(null);
-    };
+  // Handle Subcategory Change
+  const handleSubcategoryChange = (subcategoryName) => {
+    const category = data.find((cat) => cat.category === selectedCategory);
+    const subcategory = category.subcategories.find((sub) => sub.name === subcategoryName);
+    setSelectedSubcategory(subcategoryName);
+    setProducts(subcategory.products);
+  };
 
-    return (
-        <>
-            <div className="products-header">
-                <div className="breadcrumb">Home › Products › Materials</div>
-                <h1>Products & Materials</h1>
-                <p className="description">
-                    Explore a wide range of premium-quality materials and products for your home. From structural components to
-                    stylish finishes, discover everything you need for a perfect home. Browse categories like flooring, plumbing,
-                    electrical, and more to find the best options for your requirements.
-                </p>
-                <div className="filters">
-                    <select className="filter-dropdown">
-                        <option>Sort By</option>
-                        <option>Popularity</option>
-                        <option>Newest First</option>
-                        <option>Price: Low to High</option>
-                        <option>Price: High to Low</option>
-                    </select>
-                    <select className="filter-dropdown">
-                        <option>Filter By</option>
-                        <option>Structural</option>
-                        <option>Finishing</option>
-                        <option>Technology</option>
-                    </select>
-                    <select className="filter-dropdown">
-                        <option>Category</option>
-                        <option>Foundation</option>
-                        <option>Interior</option>
-                        <option>Exterior</option>
-                    </select>
-                </div>
-            </div>
-            <div className="products-container">
-                <h2>Explore Products</h2>
-                <div className="products-grid">
-                    {products.map((product, index) => (
-                        <div key={index} className="product-item" onClick={() => openModal(product.src)}>
-                            <LazyImage src={product.src} alt={product.alt} className="product-image" />
-                            <div className="product-details">
-                                <h3>{product.title}</h3>
-                                <p className="product-price">{product.price}</p>
-                                <p className="product-location">{product.location}</p>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-                {modalImage && (
-                    <div className="modal" onClick={closeModal}>
-                        <img src={modalImage} alt="Full view" className="modal-image" />
-                    </div>
-                )}
-            </div>
-        </>
-    );
+  return (
+    <Box sx={{ px: "8%", py: 6 }}>
+     {/* Header Section */}
+     <Box sx={{ mb: 4 }}>
+        <Typography
+          sx={{
+            fontFamily: 'Outfit, sans-serif',
+            fontSize: '11.62px',
+            fontWeight: 400,
+            lineHeight: '9.96px',
+            letterSpacing: '0.415px',
+            mb: 2,
+          }}
+        >
+          Home › Products › Categories
+        </Typography>
+        <Typography
+          variant="h4"
+          sx={{
+            fontFamily: 'Outfit, sans-serif',
+            fontSize: '24px',
+            fontWeight: 600,
+            mb: 2,
+          }}
+        >
+          Products & Categories 
+        </Typography>
+        <Typography
+          sx={{
+            fontFamily: 'Outfit, sans-serif',
+            fontSize: '14px',
+            fontWeight: 400,
+            lineHeight: '1.6',
+            textAlign: 'start',
+            mb: 4,
+          }}
+        >
+          Discover a wide range of handpicked living room interior designs and décor ideas at Livspace. We bring you living room designs that are customizable, practical, and trendy. Browse now to create a space that reflects your style.
+        </Typography>
+      </Box>
+      {/* Filter Section */}
+      <Grid container spacing={2} sx={{ mb: 4 }}>
+        <Grid item xs={6} sm={6} md={4}>
+          <FormControl fullWidth>
+            <Select
+              value={selectedCategory}
+              displayEmpty
+              onChange={(e) => handleCategoryChange(e.target.value)}
+              sx={{ fontFamily: "Outfit, sans-serif", fontSize: "14px" }}
+            >
+              <MenuItem value="" disabled>
+                Select a Category
+              </MenuItem>
+              {data.map((category, index) => (
+                <MenuItem key={index} value={category.category}>
+                  {category.category}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Grid>
+        {selectedCategory && (
+          <Grid item xs={6} sm={6} md={4}>
+            <FormControl fullWidth>
+              <Select
+                value={selectedSubcategory}
+                displayEmpty
+                onChange={(e) => handleSubcategoryChange(e.target.value)}
+                sx={{ fontFamily: "Outfit, sans-serif", fontSize: "14px" }}
+              >
+                <MenuItem value="" disabled>
+                  Select a Subcategory
+                </MenuItem>
+                {data
+                  .find((cat) => cat.category === selectedCategory)
+                  .subcategories.map((subcategory, index) => (
+                    <MenuItem key={index} value={subcategory.name}>
+                      {subcategory.name}
+                    </MenuItem>
+                  ))}
+              </Select>
+            </FormControl>
+          </Grid>
+        )}
+        <Grid item xs={6} sm={6} md={4}>
+          <FormControl fullWidth>
+            <Select
+              displayEmpty
+              sx={{ fontFamily: "Outfit, sans-serif", fontSize: "14px" }}
+            >
+              <MenuItem value="">Sort By</MenuItem>
+              <MenuItem value="popularity">Popularity</MenuItem>
+              <MenuItem value="price_low_high">Price: Low to High</MenuItem>
+              <MenuItem value="price_high_low">Price: High to Low</MenuItem>
+            </Select>
+          </FormControl>
+        </Grid>
+      </Grid>
+
+      {/* Categories View */}
+      {!selectedCategory && (
+        <Grid container spacing={4}>
+          {data.map((category, index) => (
+            <Grid item xs={6} sm={6} md={3} key={index}>
+              <Card
+                sx={{
+                  cursor: "pointer",
+                  borderRadius: 2,
+                  boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
+                }}
+                onClick={() => handleCategoryChange(category.category)}
+              >
+                <CardMedia
+                  component="img"
+                  image={category.image}
+                  alt={category.category}
+                  sx={{ height: 160, objectFit: "cover" }}
+                />
+                <CardContent>
+                  <Typography
+                    sx={{
+                      fontFamily: "Outfit, sans-serif",
+                      fontSize: "14px",
+                      fontWeight: 600,
+                      textAlign: "center",
+                    }}
+                  >
+                    {category.category}
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+      )}
+
+      {/* Subcategories View */}
+      {selectedCategory && !selectedSubcategory && (
+        <Grid container spacing={4}>
+          {data
+            .find((cat) => cat.category === selectedCategory)
+            .subcategories.map((subcategory, index) => (
+              <Grid item xs={6} sm={6} md={3} key={index}>
+                <Card
+                  sx={{
+                    cursor: "pointer",
+                    borderRadius: 2,
+                    boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
+                  }}
+                  onClick={() => handleSubcategoryChange(subcategory.name)}
+                >
+                  <CardMedia
+                    component="img"
+                    image={subcategory.image}
+                    alt={subcategory.name}
+                    sx={{ height: 160, objectFit: "cover" }}
+                  />
+                  <CardContent>
+                    <Typography
+                      sx={{
+                        fontFamily: "Outfit, sans-serif",
+                        fontSize: "14px",
+                        fontWeight: 600,
+                        textAlign: "center",
+                      }}
+                    >
+                      {subcategory.name}
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))}
+        </Grid>
+      )}
+
+      {/* Products View */}
+      {products.length > 0 && (
+        <Grid container spacing={4}>
+          {products.map((product, index) => (
+            <Grid item xs={6} sm={6} md={3} key={index}>
+              <Card
+                sx={{
+                  borderRadius: 2,
+                  boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
+                }}
+              >
+                <CardMedia
+                  component="img"
+                  image={product.src}
+                  alt={product.alt}
+                  sx={{ height: 160, objectFit: "cover" }}
+                />
+                <CardContent>
+                  <Typography
+                    sx={{
+                      fontFamily: "Outfit, sans-serif",
+                      fontSize: "12px",
+                      fontWeight: 500,
+                      textAlign: "start",
+                      mb: 1,
+                    }}
+                  >
+                    {product.title}
+                  </Typography>
+                  <Typography
+                    sx={{
+                      fontFamily: "Outfit, sans-serif",
+                      fontSize: "11px",
+                      fontWeight: 400,
+                      textAlign: "start",
+                      mb: 1,
+                    }}
+                  >
+                    {product.location}
+                  </Typography>
+                  <Typography
+                    sx={{
+                      color: "#0D1717",
+                      fontFamily: "Outfit, sans-serif",
+                      fontSize: "14px",
+                      fontWeight: 600,
+                    }}
+                  >
+                    {product.price}
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+      )}
+    </Box>
+  );
 };
 
 export default ProductsPage;
