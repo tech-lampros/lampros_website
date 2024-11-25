@@ -158,7 +158,7 @@ const FooterMobile = () => {
               justifyContent: 'center',
             }}
           >
-            <FaEnvelope style={{ marginRight: '8px' }} /> careers.lampros@gmail.com
+            <FaEnvelope style={{ marginRight: '8px' }} /> support@lamprosindia.com
           </Typography>
           <Typography
             sx={{
@@ -182,7 +182,7 @@ const FooterMobile = () => {
               justifyContent: 'center',
             }}
           >
-            <FaMapMarkerAlt style={{ marginRight: '8px' }} /> Calicut, Koduvally
+            <FaMapMarkerAlt style={{ marginRight: '8px' }} /> Calicut, Kerala -673572
           </Typography>
         </Box>
 

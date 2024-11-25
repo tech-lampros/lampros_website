@@ -1,6 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './App.css';
-import { Routes, Route, useLocation, useNavigate } from 'react-router-dom'; // Use useNavigate instead of Navigate
+import { Routes, Route, useLocation, useNavigate, Navigate } from 'react-router-dom';
+
+import Cookies from 'js-cookie';
+
+// Import Components
 import Nav from './components/Nav';
 import Mobnav from './components/Mobnav';
 import LandCarousel from './components/LandCarousel';
@@ -20,67 +24,90 @@ import AddProduct from './components/pro/AddProduct';
 import PrivacyPolicy from './components/Privacy';
 import Tearms from './components/Tearms.js';
 import Calc from './components/Calc';
-import Cookies from 'js-cookie';
 
 function App() {
   const token = Cookies.get('authToken');
-  const [view, setView] = useState('home');
   const location = useLocation();
-  const navigate = useNavigate(); // useNavigate hook
+  const navigate = useNavigate();
 
-  const handleViewChange = (newView) => {
-    setView(newView);
-  };
-
-  const isProDash = location.pathname === '/proDash';
-  const isAddProduct = location.pathname === '/add-product';
-  const isPrivacy = location.pathname === '/privacy_policy';
-  const isTearms = location.pathname === '/TermsAndConditions';
+  // Determine if the current path requires hiding Nav and Footer
+  const hideNavFooter = ['/proDash', '/add-product', '/privacy_policy', '/TermsAndConditions'].includes(location.pathname);
 
   return (
     <div className="App">
-      {!isProDash && !isAddProduct && !isPrivacy && !isTearms && (
+      {/* Conditionally render Nav and Footer based on the current route */}
+      {!hideNavFooter && (
         <>
+          {/* Desktop Navigation */}
           <div className="desktop-view">
             <Nav
-              onHomeClick={() => handleViewChange('home')}
-              onJoinAsProClick={() => handleViewChange('pro')}
-              onLogin={() => !token ? handleViewChange('proLogin') : navigate('/proDash')}
-              onDesignsClick={() => handleViewChange('designs')}
-              onProductsClick={() => handleViewChange('products')}
-              onProfessionalsClick={() => handleViewChange('professionals')}
-            />
-          </div>
-          <div className="mobile-view">
-            <Mobnav
-              onHomeClick={() => handleViewChange('home')}
-              onJoinAsProClick={() => handleViewChange('proLogin')}
-              onDesignsClick={() => handleViewChange('designs')}
-              onProductsClick={() => handleViewChange('products')}
-              onProfessionalsClick={() => handleViewChange('professionals')}
+              onHomeClick={() => navigate('/')}
+              onJoinAsProClick={() => navigate(token ? '/proDash' : '/proLogin')}
+              onLogin={() => navigate(token ? '/proDash' : '/proLogin')}
+              onDesignsClick={() => navigate('/designs')}
+              onProductsClick={() => navigate('/products')}
+              onProfessionalsClick={() => navigate('/professionals')}
             />
           </div>
 
-          {view === 'home' && (
+          {/* Mobile Navigation */}
+          <div className="mobile-view">
+            <Mobnav
+              onHomeClick={() => navigate('/')}
+              onJoinAsProClick={() => navigate(token ? '/proDash' : '/proLogin')}
+              onDesignsClick={() => navigate('/designs')}
+              onProductsClick={() => navigate('/products')}
+              onProfessionalsClick={() => navigate('/professionals')}
+            />
+          </div>
+        </>
+      )}
+
+      {/* Define Routes */}
+      <Routes>
+        {/* Public Routes */}
+        <Route
+          path="/"
+          element={
             <>
               <LandCarousel />
               <Explore
-                onDesignsClick={() => handleViewChange('designs')}
-                onProductsClick={() => handleViewChange('products')}
-                onProfessionalsClick={() => handleViewChange('professionals')}
+                onDesignsClick={() => navigate('/designs')}
+                onProductsClick={() => navigate('/products')}
+                onProfessionalsClick={() => navigate('/professionals')}
               />
               <Calc />
               <Benefits />
               <AppDownload />
             </>
-          )}
-          {view === 'proLogin' && <ProLogin onBecomePartner={() => handleViewChange('pro')} />}
-          {view === 'pro' && <ProHome onGetStarted={() => handleViewChange('accountCreation')} />}
-          {view === 'accountCreation' && <AccountCreation />}
-          {view === 'designs' && <DesignsPage />}
-          {view === 'products' && <ProductsPage />}
-          {view === 'professionals' && <Professionals />}
+          }
+        />
+        <Route path="/designs" element={<DesignsPage />} />
+        <Route path="/products" element={<ProductsPage />} />
+        <Route path="/professionals" element={<Professionals />} />
+        <Route path="/privacy_policy" element={<PrivacyPolicy />} />
+        <Route path="/TermsAndConditions" element={<Tearms />} />
 
+        {/* Professional Routes */}
+        <Route
+          path="/proLogin"
+          element={<ProLogin onBecomePartner={() => navigate('/pro')} />}
+        />
+        <Route
+          path="/pro"
+          element={<ProHome onGetStarted={() => navigate('/accountCreation')} />}
+        />
+        <Route path="/accountCreation" element={<AccountCreation />} />
+        <Route path="/proDash" element={<Prodash />} />
+        <Route path="/add-product" element={<AddProduct />} />
+
+        {/* Redirect unknown routes to home or a 404 component */}
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+
+      {/* Conditionally render Footer */}
+      {!hideNavFooter && (
+        <>
           <div className="desktop-view">
             <Footer />
           </div>
@@ -89,14 +116,6 @@ function App() {
           </div>
         </>
       )}
-
-      {/* Routes for ProDash, AddProduct, PrivacyPolicy, and TermsAndConditions */}
-      <Routes>
-        <Route path="/proDash" element={<Prodash />} />
-        <Route path="/add-product" element={<AddProduct />} />
-        <Route path="/privacy_policy" element={<PrivacyPolicy />} />
-        <Route path="/TermsAndConditions" element={<Tearms />} />
-      </Routes>
     </div>
   );
 }

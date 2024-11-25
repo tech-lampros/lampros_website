@@ -51,14 +51,13 @@ const Footer = () => {
             <Box>
               <Typography sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
                 <FaEnvelope style={{ marginRight: '8px' }} />{' '}
-                careers.lampros@gmail.com
+                support@lamprosindia.com
               </Typography>
               <Typography sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
                 <FaPhoneAlt style={{ marginRight: '8px' }} /> +91 7592990050
               </Typography>
               <Typography sx={{ display: 'flex', alignItems: 'center' }}>
-                <FaMapMarkerAlt style={{ marginRight: '8px' }} /> Calicut,
-                Koduvally
+                <FaMapMarkerAlt style={{ marginRight: '8px' }} /> Calicut, Kerala -673572
               </Typography>
             </Box>
             <Box sx={{ mt: 2 }}>

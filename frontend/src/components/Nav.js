@@ -29,7 +29,7 @@ const NavigationBar = ({ onHomeClick, onJoinAsProClick, onDesignsClick,onLogin, 
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="mx-auto">
-          <NavDropdown title="Designs" id="designs-dropdown">
+          <NavDropdown title="Designs" id="designs-dropdown" onClick={onDesignsClick}>
             <NavDropdown.Item onClick={onDesignsClick}>Bedroom Designs</NavDropdown.Item>
             <NavDropdown.Item>Kitchen Designs</NavDropdown.Item>
             <NavDropdown.Item>Bathroom Designs</NavDropdown.Item>
@@ -43,7 +43,7 @@ const NavigationBar = ({ onHomeClick, onJoinAsProClick, onDesignsClick,onLogin, 
             <NavDropdown.Item>Floor Plans</NavDropdown.Item>
           </NavDropdown>
 
-          <NavDropdown title="Professionals" id="professionals-dropdown">
+          <NavDropdown title="Professionals" id="professionals-dropdown" onClick={onProfessionalsClick}>
             <NavDropdown.Item>Architect</NavDropdown.Item>
             <NavDropdown.Item>Plumber</NavDropdown.Item>
             <NavDropdown.Item>Electrician</NavDropdown.Item>
@@ -54,7 +54,7 @@ const NavigationBar = ({ onHomeClick, onJoinAsProClick, onDesignsClick,onLogin, 
             <NavDropdown.Item>Flooring Specialist</NavDropdown.Item>
           </NavDropdown>
 
-          <NavDropdown title="Products" id="products-dropdown">
+          <NavDropdown title="Products" id="products-dropdown" onClick={onProductsClick}>
             <NavDropdown.Item>Sanitary</NavDropdown.Item>
             <NavDropdown.Item>Electronics</NavDropdown.Item>
             <NavDropdown.Item>Furniture</NavDropdown.Item>
