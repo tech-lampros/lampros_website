@@ -82,8 +82,8 @@ const Explore = ({ onDesignsClick, onProductsClick, onProfessionalsClick }) => {
                 image={item.img}
                 alt={item.title}
                 sx={{
-                  width: '160px',
-                  height: '160px',
+                  width: { xs: '100px' , md: '250px'},
+                  height: 'auto',
                   borderRadius: '50%', // Make the image circular
                   objectFit: 'cover',
                   marginRight: 2,

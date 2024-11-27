@@ -15,7 +15,7 @@ const LandCarousel = () => {
     <Box
       sx={{
         width: "100%",
-        minHeight: "60vh",
+        minHeight: "auto",
         overflow: "hidden",
         bgcolor: "#ffffff",
         p: { xs: 2, sm: 4, md: 6 },
@@ -34,7 +34,7 @@ const LandCarousel = () => {
             key={index}
             sx={{
               display: "flex",
-              flexDirection: { xs: "column", md: "row" }, // Stack on mobile, row on desktop
+              flexDirection: { xs: "row", md: "row" }, // Stack on mobile, row on desktop
               alignItems: "center",
               justifyContent: "space-between",
               height: "100%",
@@ -54,7 +54,7 @@ const LandCarousel = () => {
                 variant="h2"
                 sx={{
                   fontFamily: "Muller, sans-serif",
-                  fontSize: { xs: "24px", sm: "36px", md: "48px" },
+                  fontSize: { xs: "17px", sm: "26px", md: "48px" },
                   fontWeight: 700,
                   lineHeight: { xs: "30px", sm: "44px", md: "57.6px" },
                   letterSpacing: "1.5px",
@@ -72,7 +72,7 @@ const LandCarousel = () => {
                   fontFamily: "Montserrat, sans-serif",
                   fontSize: { xs: "16px", md: "20px" },
                   fontWeight: 500,
-                  lineHeight: { xs: "20px", md: "24px" },
+                  lineHeight: { xs: "0px", md: "24px" },
                   letterSpacing: "0.5px",
                   textAlign: { xs: "center", md: "left" },
                   textUnderlinePosition: "from-font",
@@ -89,8 +89,9 @@ const LandCarousel = () => {
                 variant="contained"
                 sx={{
                   bgcolor: "#FF7800",
+                fontSize: { xs: "8px", md: "20px" },
                   "&:hover": { bgcolor: "#FF5722" },
-                  width: { xs: "100%", md: "auto" },
+                  width: { xs: "auto", md: "auto" },
                 }}
               >
                 Explore Now
@@ -104,7 +105,7 @@ const LandCarousel = () => {
               alt={`Slide ${index}`}
               sx={{
                 flex: 1,
-                maxWidth: "100%",
+                maxWidth: { xs: "40vw", md: "100%" },
                 height: { xs: "auto", md: "70vh" },
                 objectFit: "contain",
                 alignSelf: "center",

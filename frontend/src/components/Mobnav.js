@@ -8,284 +8,244 @@ import {
   ListItem,
   ListItemButton,
   ListItemText,
+  Collapse,
   Button,
   Box,
-  InputBase,
   Divider,
-  Fade,
   Tooltip,
-  Autocomplete,
 } from '@mui/material';
 import { styled, alpha } from '@mui/material/styles';
+import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import MenuIcon from '@mui/icons-material/Menu';
-import SearchIcon from '@mui/icons-material/Search';
-import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import CloseIcon from '@mui/icons-material/Close';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import BedroomIcon from '@mui/icons-material/BedroomBaby';
+import BusinessIcon from '@mui/icons-material/Business';
+import BuildIcon from '@mui/icons-material/Build';
 import logo from '../assets/logo.png'; // Ensure the path is correct
+import { useNavigate } from 'react-router-dom';
 
-// Define your dark orange color
-const DARK_ORANGE = '#E65100'; // You can adjust this shade as needed
+const DARK_ORANGE = '#E65100';
 
-// Styled Components for Search Functionality
-const Search = styled('div')(({ theme }) => ({
-  position: 'relative',
-  borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha('#000000', 0.05),
-  '&:hover': {
-    backgroundColor: alpha('#000000', 0.1),
-  },
-  marginLeft: 0,
-  width: '100%',
-  transition: theme.transitions.create(['width', 'background-color'], {
-    duration: theme.transitions.duration.shorter,
-  }),
-}));
-
-const SearchIconWrapper = styled('div')(({ theme }) => ({
-  padding: theme.spacing(0, 2),
-  height: '100%',
-  position: 'absolute',
-  pointerEvents: 'none',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-}));
-
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: 'inherit',
-  width: '100%',
-  paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-  transition: theme.transitions.create('width'),
-  '& .MuiInputBase-input': {
-    padding: theme.spacing(0.5, 1, 0.5, 0),
-    // Vertical padding + font size from searchIcon
-    width: '100%',
-  },
-}));
-
-function Mobnav({
-  onHomeClick,
-  onJoinAsProClick,
-  onDesignsClick,
-  onProductsClick,
-  onProfessionalsClick,
-}) {
-  const [searchVisible, setSearchVisible] = useState(false);
+function Mobnav() {
   const [drawerOpen, setDrawerOpen] = useState(false);
-
-  const toggleSearch = () => {
-    setSearchVisible((prev) => !prev);
-  };
+  const [openSubmenu, setOpenSubmenu] = useState('');
+  const navigate = useNavigate();
 
   const handleDrawerToggle = () => {
-    setDrawerOpen((prev) => !prev);
+    setDrawerOpen(!drawerOpen);
   };
 
-  const handleNavClick = (action) => {
-    if (action) action();
+  const handleSubmenuToggle = (menu) => {
+    setOpenSubmenu((prev) => (prev === menu ? '' : menu));
+  };
+
+  const handleNavClick = (path) => {
+    navigate(path);
     setDrawerOpen(false);
   };
 
   const navItems = [
-    { text: 'Home', onClick: onHomeClick },
-    { text: 'Designs', onClick: onDesignsClick },
-    { text: 'Professionals', onClick: onProfessionalsClick },
-    { text: 'Products', onClick: onProductsClick },
+    {
+      text: 'Designs',
+      icon: <BedroomIcon />,
+      submenu: [
+        { text: 'Bedroom', path: '/designs' },
+        { text: 'Kitchen', path: '/designs' },
+        { text: 'View All', path: '/designs' },
+      ],
+    },
+    {
+      text: 'Professionals',
+      icon: <BusinessIcon />,
+      submenu: [
+        { text: 'Interior Designers', path: '/professionals' },
+        { text: 'Architects', path: '/professionals' },
+        { text: 'Painters', path: '/professionals' },
+        { text: 'View All', path: '/professionals' },
+      ],
+    },
+    {
+      text: 'Products',
+      icon: <BuildIcon />,
+      submenu: [
+        { text: 'Bathroom & Toilet', path: '/products' },
+        { text: 'Kitchen Fittings', path: '/products' },
+        { text: 'Flooring', path: '/products' },
+        { text: 'View All', path: '/products' },
+      ],
+    },
   ];
-
-  // Sample search options (Replace with dynamic data as needed)
-  const searchOptions = ['Designs', 'Products', 'Professionals', 'Home'];
 
   return (
     <>
-      {/* Customized AppBar with White Background and Black Icons */}
+      {/* AppBar */}
       <AppBar
         position="static"
-        color="transparent"
-        elevation={0}
         sx={{
-          backgroundColor: '#FFFFFF', // White background
-          height: '56px', // Reduced height
-          [theme => theme.breakpoints.up('sm')]: {
-            height: '64px', // Slightly larger height for larger screens
-          },
+          backgroundColor: '#FFFFFF',
+          boxShadow: 'none',
+          color: '#000',
         }}
       >
         <Toolbar
           sx={{
-            minHeight: '56px !important', // Override default minHeight
-            paddingX: 1, // Horizontal padding
             display: 'flex',
+            justifyContent: 'space-between',
             alignItems: 'center',
           }}
         >
-          {/* Logo */}
-          <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: 1 }}>
-            <img
-              src={logo}
-              alt="Logo"
-              style={{ width: '80px', cursor: 'pointer' }}
-              onClick={onHomeClick}
-            />
-          </Box>
-
-         
-
-          {/* Notifications Icon */}
-          <Tooltip title="Notifications">
-            <IconButton
-              size="large"
-              aria-label="notifications"
-              color="inherit"
-              sx={{ marginLeft: 2 }}
-            >
-              <NotificationsIcon />
-            </IconButton>
-          </Tooltip>
-
-          {/* User Profile Icon */}
-          <Tooltip title="Account">
-            <IconButton
-              size="large"
-              edge="end"
-              aria-label="account"
-              color="inherit"
-              sx={{ marginLeft: 2 }}
-            >
-              <AccountCircleIcon />
-            </IconButton>
-          </Tooltip>
-
           {/* Menu Icon */}
           <Tooltip title="Menu">
-            <IconButton
-              size="large"
-              edge="end"
-              aria-label="menu"
-              color="inherit"
-              onClick={handleDrawerToggle}
-              sx={{ marginLeft: 2 }}
-            >
+            <IconButton onClick={handleDrawerToggle}>
               <MenuIcon />
             </IconButton>
           </Tooltip>
-        </Toolbar>
 
-        {/* Search Bar with Fade Transition */}
-        <Fade in={searchVisible}>
-          <Box sx={{ p: 1, backgroundColor: alpha('#000000', 0.05) }}>
-            <Search>
-              <SearchIconWrapper>
-                <SearchIcon />
-              </SearchIconWrapper>
-              <Autocomplete
-                freeSolo
-                options={searchOptions}
-                renderInput={(params) => (
-                  <StyledInputBase
-                    {...params.inputProps}
-                    placeholder="Search…"
-                    inputProps={{
-                      ...params.inputProps,
-                      'aria-label': 'search',
-                    }}
-                  />
-                )}
-                sx={{ width: '100%' }}
-              />
-            </Search>
+          {/* Logo */}
+          <img
+            src={logo}
+            alt="Logo"
+            style={{ width: '100px', cursor: 'pointer' }}
+            onClick={() => handleNavClick('/')} // Navigate to Home
+          />
+
+          {/* Account and Notifications */}
+          <Box>
+            <Tooltip title="Notifications">
+              <IconButton>
+                <NotificationsIcon />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Account">
+              <IconButton>
+                <AccountCircleIcon />
+              </IconButton>
+            </Tooltip>
           </Box>
-        </Fade>
+        </Toolbar>
       </AppBar>
 
-      {/* Drawer Component */}
-      <Drawer
-        anchor="right"
-        open={drawerOpen}
-        onClose={handleDrawerToggle}
-        ModalProps={{
-          keepMounted: true, // Better open performance on mobile.
-        }}
-      >
+      {/* Drawer */}
+      <Drawer anchor="left" open={drawerOpen} onClose={handleDrawerToggle}>
         <Box
           sx={{
-            width: 250,
+            width: 300,
+            height: '100%',
+            backgroundColor: '#FFFFFF',
             display: 'flex',
             flexDirection: 'column',
-            height: '100%',
-            backgroundColor: '#FFFFFF', // White background
-            color: 'black', // Black text for contrast
           }}
-          role="presentation"
-          onKeyDown={handleDrawerToggle}
         >
           {/* Drawer Header */}
           <Box
             sx={{
               display: 'flex',
               alignItems: 'center',
-              p: 2,
               justifyContent: 'space-between',
-              backgroundColor: '#FFFFFF', // White background for consistency
+              p: 2,
             }}
           >
             <img
               src={logo}
               alt="Logo"
-              style={{ width: '120px', cursor: 'pointer' }}
-              onClick={() => handleNavClick(onHomeClick)}
+              style={{ width: '120px' }}
+              onClick={() => handleNavClick('/')} // Navigate to Home
             />
-            <IconButton onClick={handleDrawerToggle} sx={{ color: 'black' }}>
+            <IconButton onClick={handleDrawerToggle}>
               <CloseIcon />
             </IconButton>
           </Box>
+          <Divider />
 
-          <Divider sx={{ backgroundColor: alpha('#000', 0.2) }} />
-
-          {/* Navigation Links */}
+          {/* Navigation Items */}
           <List>
+            <ListItem disablePadding>
+              <ListItemButton
+                onClick={() => handleNavClick('/')} // Navigate to Home
+                sx={{
+                  '&:hover': {
+                    backgroundColor: DARK_ORANGE,
+                    color: '#FFFFFF',
+                  },
+                }}
+              >
+                <ListItemText primary="Home" />
+              </ListItemButton>
+            </ListItem>
             {navItems.map((item, index) => (
-              <ListItem key={index} disablePadding>
-                <ListItemButton
-                  onClick={() => handleNavClick(item.onClick)}
-                  sx={{
-                    '&:hover': {
-                      backgroundColor: alpha('#E65100', 0.1), // Light orange on hover
-                      transform: 'scale(1.02)',
-                      transition: 'transform 0.2s ease-in-out',
-                    },
-                  }}
+              <React.Fragment key={index}>
+                <ListItem disablePadding>
+                  <ListItemButton
+                    onClick={() => handleSubmenuToggle(item.text)}
+                    sx={{
+                      '&:hover': {
+                        backgroundColor: DARK_ORANGE,
+                        color: '#FFFFFF',
+                      },
+                    }}
+                  >
+                    {item.icon}
+                    <ListItemText
+                      primary={item.text}
+                      sx={{ marginLeft: 2 }}
+                    />
+                    {openSubmenu === item.text ? <ExpandLess /> : <ExpandMore />}
+                  </ListItemButton>
+                </ListItem>
+                <Collapse
+                  in={openSubmenu === item.text}
+                  timeout="auto"
+                  unmountOnExit
                 >
-                  <ListItemText
-                    primary={item.text}
-                    primaryTypographyProps={{ variant: 'h6', color: 'black' }}
-                  />
-                </ListItemButton>
-              </ListItem>
+                  <List disablePadding>
+                    {item.submenu.map((subitem, subIndex) => (
+                      <ListItem key={subIndex} disablePadding>
+                        <ListItemButton
+                          onClick={() => handleNavClick(subitem.path)} // Navigate to subitem path
+                          sx={{
+                            pl: 4,
+                            '&:hover': {
+                              backgroundColor: alpha(DARK_ORANGE, 0.1),
+                            },
+                          }}
+                        >
+                          <ListItemText
+                            primary={subitem.text}
+                            primaryTypographyProps={{
+                              color:
+                                subitem.text === 'View All'
+                                  ? DARK_ORANGE
+                                  : 'inherit', // Set 'View All' color to orange
+                              fontWeight:
+                                subitem.text === 'View All' ? 'bold' : 'normal',
+                            }}
+                          />
+                        </ListItemButton>
+                      </ListItem>
+                    ))}
+                  </List>
+                </Collapse>
+              </React.Fragment>
             ))}
           </List>
+          <Divider />
 
-          <Divider sx={{ backgroundColor: alpha('#000', 0.2) }} />
-
-          {/* Become a Partner Button in Drawer */}
+          {/* Join as a Pro Button */}
           <Box sx={{ p: 2 }}>
             <Button
               variant="contained"
-              startIcon={<PersonAddIcon />}
               fullWidth
-              onClick={() => handleNavClick(onJoinAsProClick)}
+              onClick={() => handleNavClick('/pro')} // Navigate to Join as Pro page
               sx={{
-                backgroundColor: DARK_ORANGE, // Dark orange color
-                color: 'white',
+                backgroundColor: DARK_ORANGE,
+                color: '#FFFFFF',
                 textTransform: 'none',
-                '&:hover': {
-                  backgroundColor: '#D84315', // Slightly darker orange on hover
-                },
+                '&:hover': { backgroundColor: '#D84315' },
               }}
             >
-              Become a Partner
+              Join as a Pro
             </Button>
           </Box>
         </Box>
