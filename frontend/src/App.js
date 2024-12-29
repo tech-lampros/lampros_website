@@ -36,7 +36,7 @@ function App() {
   return (
     <div className="App">
       {/* Conditionally render Nav and Footer based on the current route */}
-      {!hideNavFooter && (
+      {!hideNavFooter && false && (
         <>
           {/* Desktop Navigation */}
           <div className="desktop-view">
@@ -109,7 +109,7 @@ function App() {
       </Routes>
 
       {/* Conditionally render Footer */}
-      {!hideNavFooter && (
+      {!hideNavFooter && false && (
         <>
           <div className="desktop-view">
             <Footer />
