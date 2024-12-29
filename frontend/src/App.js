@@ -66,43 +66,43 @@ function App() {
       {/* Define Routes */}
       <Routes>
         {/* Public Routes */}
-        // <Route
-        //   path="/"
-        //   element={
-        //     <>
-        //       <LandCarousel />
-        //       <Explore
-        //         onDesignsClick={() => navigate('/designs')}
-        //         onProductsClick={() => navigate('/products')}
-        //         onProfessionalsClick={() => navigate('/professionals')}
-        //       />
-        //       <Calc />
-        //       <Benefits />
-        //       <AppDownload />
-        //     </>
-        //   }
-        // />
-        // <Route path="/designs" element={<DesignsPage />} />
-        // <Route path="/products" element={<ProductsPage />} />
-        // <Route path="/professionals" element={<Professionals />} />
-        // <Route path="/privacy_policy" element={<PrivacyPolicy />} />
-        // <Route path="/TermsAndConditions" element={<Tearms />} />
+        {/*<Route
+          path="/"
+          element={
+            <>
+              <LandCarousel />
+              <Explore
+                onDesignsClick={() => navigate('/designs')}
+                onProductsClick={() => navigate('/products')}
+                onProfessionalsClick={() => navigate('/professionals')}
+              />
+              <Calc />
+              <Benefits />
+              <AppDownload />
+            </>
+          }
+        />
+        <Route path="/designs" element={<DesignsPage />} />
+        <Route path="/products" element={<ProductsPage />} />
+        <Route path="/professionals" element={<Professionals />} />
+        <Route path="/privacy_policy" element={<PrivacyPolicy />} />
+        <Route path="/TermsAndConditions" element={<Tearms />} />*/}
 
-        // {/* Professional Routes */}
-        // <Route
-        //   path="/proLogin"
-        //   element={<ProLogin onBecomePartner={() => navigate('/pro')} />}
-        // />
-        // <Route
-        //   path="/pro"
-        //   element={<ProHome onGetStarted={() => navigate('/accountCreation')} />}
-        // />
-        // <Route path="/accountCreation" element={<AccountCreation />} />
-        // <Route path="/proDash" element={<Prodash />} />
-        // <Route path="/add-product" element={<AddProduct />} />
+        {/* Professional Routes */}
+        {/*<Route
+          path="/proLogin"
+          element={<ProLogin onBecomePartner={() => navigate('/pro')} />}
+        />
+        <Route
+          path="/pro"
+          element={<ProHome onGetStarted={() => navigate('/accountCreation')} />}
+        />
+        <Route path="/accountCreation" element={<AccountCreation />} />
+        <Route path="/proDash" element={<Prodash />} />
+        <Route path="/add-product" element={<AddProduct />} />*/}
 
         {/* Redirect unknown routes to home or a 404 component */}
-        // <Route path="*" element={<Navigate to="/" replace />} />
+        {/*<Route path="*" element={<Navigate to="/" replace />} />*/}
         <Route path="*" element={<Navigate to="/privacy_policy" replace />} />
       </Routes>
 
