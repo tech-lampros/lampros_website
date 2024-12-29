@@ -103,6 +103,8 @@ function App() {
 
         {/* Redirect unknown routes to home or a 404 component */}
         {/*<Route path="*" element={<Navigate to="/" replace />} />*/}
+        {/* Redirect all routes to /privacy_policy */}
+        <Route path="/privacy_policy" element={<PrivacyPolicy />} />
         <Route path="*" element={<Navigate to="/privacy_policy" replace />} />
       </Routes>
 
