@@ -102,7 +102,8 @@ function App() {
         // <Route path="/add-product" element={<AddProduct />} />
 
         {/* Redirect unknown routes to home or a 404 component */}
-        <Route path="/*" element={<Navigate to="/privacy_policy" replace />} />
+        // <Route path="*" element={<Navigate to="/" replace />} />
+        <Route path="*" element={<Navigate to="/privacy_policy" replace />} />
       </Routes>
 
       {/* Conditionally render Footer */}
