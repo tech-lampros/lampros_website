@@ -36,7 +36,7 @@ function App() {
   return (
     <div className="App">
       {/* Conditionally render Nav and Footer based on the current route */}
-      {!hideNavFooter && (
+      {!hideNavFooter && false && (
         <>
           {/* Desktop Navigation */}
           <div className="desktop-view">
@@ -66,7 +66,7 @@ function App() {
       {/* Define Routes */}
       <Routes>
         {/* Public Routes */}
-        <Route
+        {/*<Route
           path="/"
           element={
             <>
@@ -86,10 +86,10 @@ function App() {
         <Route path="/products" element={<ProductsPage />} />
         <Route path="/professionals" element={<Professionals />} />
         <Route path="/privacy_policy" element={<PrivacyPolicy />} />
-        <Route path="/TermsAndConditions" element={<Tearms />} />
+        <Route path="/TermsAndConditions" element={<Tearms />} />*/}
 
         {/* Professional Routes */}
-        <Route
+        {/*<Route
           path="/proLogin"
           element={<ProLogin onBecomePartner={() => navigate('/pro')} />}
         />
@@ -99,14 +99,17 @@ function App() {
         />
         <Route path="/accountCreation" element={<AccountCreation />} />
         <Route path="/proDash" element={<Prodash />} />
-        <Route path="/add-product" element={<AddProduct />} />
+        <Route path="/add-product" element={<AddProduct />} />*/}
 
         {/* Redirect unknown routes to home or a 404 component */}
+        {/*<Route path="*" element={<Navigate to="/" replace />} />*/}
+        {/* Redirect all routes to /privacy_policy */}
+        <Route path="/" element={<PrivacyPolicy />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
 
       {/* Conditionally render Footer */}
-      {!hideNavFooter && (
+      {!hideNavFooter && false && (
         <>
           <div className="desktop-view">
             <Footer />
